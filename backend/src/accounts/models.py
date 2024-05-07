@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
 import uuid
 def imagesave(instance,filename):
     extension = filename.split(".")[-1]
-    return "users/%s/%s.%s"%("images", instance.id, extension)
+    return "users/%s/%s.%s"%(instance.id, extension)
 
 
 class UserAccountManager(BaseUserManager):
@@ -43,7 +43,7 @@ class UserAccountManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    #id                  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id                  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name          = models.CharField(max_length=255)
     last_name           = models.CharField(max_length=255)
     email               = models.EmailField(unique=True, max_length=255)

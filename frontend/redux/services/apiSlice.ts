@@ -6,7 +6,6 @@ import type {
 } from '@reduxjs/toolkit/query';
 import { setAuth, setLogout } from '../features/authSlice';
 import { Mutex } from 'async-mutex';
-import Cookies from 'js-cookie';
 const mutex = new Mutex();
 const baseQuery = fetchBaseQuery({
 	baseUrl: `${process.env.NEXT_PUBLIC_HOST}/api`,
@@ -37,7 +36,7 @@ const baseQueryWithReauth: BaseQueryFn<
 
 					result = await baseQuery(args, api, extraOptions);
 				} else {
-					Cookies.remove('access_token')
+					// Cookies.remove('access_token')
 					api.dispatch(setLogout());
 				}
 			} finally {

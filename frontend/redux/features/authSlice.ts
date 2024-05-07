@@ -35,9 +35,15 @@ const authSlice = createSlice({
 	reducers: {
 		setAuth: (state, action) => {
 			state.isAuthenticated = true;
-            state.user = jwtDecode(action.payload)
+			if(action.payload)
+				{
+					Cookies.set('access_token', action.payload) 
+					state.user = jwtDecode(action.payload)
+				}
 		},
 		setLogout: state => {
+			
+			Cookies.remove('access_token')
 			state.isAuthenticated = false;
 		},
 		finishInitialLoad: state => {

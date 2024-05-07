@@ -1,10 +1,10 @@
+'use client';
 import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { setLogout } from '@/redux/features/authSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { useLogoutMutation } from '@/redux/features/authApiSlice';
-import Cookies from 'js-cookie';
 interface user {
     first_name:string;
     last_name: string;
@@ -21,7 +21,6 @@ const UserNavDropDown = ({user}:Props) => {
     const [logout] = useLogoutMutation();
 
     const handleLogout = () => {
-      Cookies.remove('access_token')
 		logout(undefined)
 			.unwrap()
 			.then(() => {
@@ -34,26 +33,25 @@ const UserNavDropDown = ({user}:Props) => {
     return (
         <Menu as="div" className="relative inline-block text-left">
           <div>
-              <Menu.Button className=" items-center inline-flex w-full justify-center gap-x-2 rounded-full px-3 py-2 text-sm font-semibold transition text-black bg-gray-100 hover:bg-gray-200">
-              {user?.first_name}
-              
+              <MenuButton className=" items-center inline-flex w-full justify-center gap-x-2 rounded-full px-3 py-2 text-sm font-semibold transition text-black bg-gray-100 hover:bg-gray-200">
               {
                 user?.image?
-                    <img
-                        className="h-8 w-8 rounded-full"
-                        src={process.env.NEXT_PUBLIC_HOST+user?.image}
-                        alt=""
-                    />
+                  <div className='flex items-center gap-2 '>
+                      <span className="font-semibold">
+                        {user?.first_name + " " + user?.last_name}              
+                      </span>
+                      <img
+                          className="h-8 w-8 rounded-full"
+                          src={process.env.NEXT_PUBLIC_HOST+user?.image}
+                          alt="user logo"
+                      />
+                  </div>
                 :
-                <img
-                    className="h-8 w-8 rounded-full"
-                    src={'/next.svg'}
-                    alt=""
-                />
+                null
               }
 
               
-              </Menu.Button>
+              </MenuButton>
           </div>
 
           <Transition
@@ -65,9 +63,9 @@ const UserNavDropDown = ({user}:Props) => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div className="py-1">
-                <Menu.Item>
+                <MenuItem>
                   {({ active }) => (
                     <Link
                       href={`/auth/profile/${user.id}`}
@@ -79,8 +77,8 @@ const UserNavDropDown = ({user}:Props) => {
                       Profile
                     </Link>
                   )}
-                </Menu.Item>
-                <Menu.Item>
+                </MenuItem>
+                <MenuItem>
                   {({ active }) => (
                     <Link
                       href="/auth/settings"
@@ -92,12 +90,12 @@ const UserNavDropDown = ({user}:Props) => {
                       Settings
                     </Link>
                   )}
-                </Menu.Item>
+                </MenuItem>
               </div>
 
 
               <div className="py-1">
-                <Menu.Item>
+                <MenuItem>
                   {({ active }) => (
                     <button
                         onClick={handleLogout}
@@ -109,9 +107,9 @@ const UserNavDropDown = ({user}:Props) => {
                       Logout
                     </button>
                   )}
-                </Menu.Item>
+                </MenuItem>
               </div>
-            </Menu.Items>
+            </MenuItems>
           </Transition>
         </Menu>
     )

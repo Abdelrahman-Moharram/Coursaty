@@ -2,6 +2,9 @@ from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import BasePermission, IsAuthenticated, AllowAny
+from rest_framework.decorators import api_view, permission_classes
+
 from .serializers import MyTokenObtainPairSerializer
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -79,7 +82,7 @@ class CustomTokenVerifyView(TokenVerifyView):
 
         return super().post(request, *args, **kwargs)
 
-
+@permission_classes([AllowAny])
 class LogoutView(APIView):
     def post(self, request, *args, **kwargs):
         response = Response(status=status.HTTP_204_NO_CONTENT)

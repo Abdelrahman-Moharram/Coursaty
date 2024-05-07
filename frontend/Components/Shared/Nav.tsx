@@ -7,7 +7,7 @@ import UserNavDropDown from './UserNavDropDown';
 export default function Navbar() {
 
 
-	const { isAuthenticated, user } = useAppSelector(state => state.auth);
+	const { isAuthenticated, user, isLoading } = useAppSelector(state => state.auth);
 
 	const authLinks = () => (
 		<>
@@ -75,7 +75,7 @@ export default function Navbar() {
                 <div className="flex items-center gap-4">
                     <div className="sm:flex sm:gap-4">
                         {
-                            isAuthenticated?
+                            isAuthenticated || isLoading?
                                 authLinks()
                             :
                                 guestLinks()

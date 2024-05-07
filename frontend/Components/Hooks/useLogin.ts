@@ -29,7 +29,6 @@ export default function useLogin() {
 		login({ email, password })
 			.unwrap()
 			.then((data) => {
-                Cookies.set('access_token', data?.access)       
 				dispatch(setAuth(data?.access));
 				toast.success('Logged in');
 				router.push('/');

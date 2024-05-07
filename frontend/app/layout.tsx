@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Provider from '@/redux/provider';
+import { Provider } from '@/redux';
 import { Nav } from "@/Components/Shared";
-import { ToastContainer } from 'react-toastify';
+import { Setup } from "@/Components/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-        <body className={inter.className}>
+        <body className={inter.className + " bg-gray-100"}>
           <Provider>
-            <Nav />
+          <Setup />
+          <Nav />
             {children}
-            <ToastContainer />
           </Provider>
         </body>
     </html>
