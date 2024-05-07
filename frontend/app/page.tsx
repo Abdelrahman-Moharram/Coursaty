@@ -1,7 +1,12 @@
-import Image from "next/image";
+import type { Metadata } from 'next';
 
+
+export const metadata: Metadata = {
+	title: 'Coursatty | Home',
+	description: 'Coursatty home page',
+};
 export default function Home() {
   return (
-    <div></div>  
+    <div>test</div>  
   );
 }
