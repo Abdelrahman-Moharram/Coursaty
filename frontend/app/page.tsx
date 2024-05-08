@@ -1,9 +1,8 @@
 'use client'
-import { Divider } from '@/Components/Common';
 import CategoriesSection from './_Components/CategoriesSection';
 import Hero from './_Components/Hero';
 import { useGetIndexPageQuery } from '@/redux/api/homeApi';
-import { CardsSwiper } from '@/Components/Swipper';
+import CardsSwiperWithTitle from '@/Components/Swipper/CardsSwiperWithTitle';
 
 
 
@@ -19,11 +18,8 @@ export default function Home() {
       <CategoriesSection industries={data?.industries} />
 
       <div>
-        <Divider title={"Top Courses"} />
-        <div className="my-10 px-3">
-          <CardsSwiper courses={data?.lowPricesCourses} />
-        </div>
-        
+        <CardsSwiperWithTitle courses={data?.lowPricesCourses} title="Low Prices Courses" />
+        <CardsSwiperWithTitle courses={data?.lowPricesCourses} title="Low Prices Courses" />
       </div>
     </div>
   );

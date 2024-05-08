@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 
-.default-shadow{
+.shadow-default-md{
+    box-shadow: 0 0 5px 1px #9b9292 !important;
+}
+
+.shadow-default-lg{
     box-shadow: 0 0 8px 1px #9b9292 !important;
 }
+
 
 .swiper-pagination{
     position: relative !important;
@@ -32,3 +37,9 @@
     fill: #FFFFFF;
 }
 
+.truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

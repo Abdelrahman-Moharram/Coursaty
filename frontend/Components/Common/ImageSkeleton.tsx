@@ -1,12 +1,19 @@
 import React from 'react'
 
-const ImageSkeleton = ({width, height}:{width:string, height:string}) => {
+
+interface props{
+  width:string;
+  height:string;
+  rounded?:string
+}
+const ImageSkeleton = ({width, height, rounded='0px'}:props) => {
     return (
       <div 
           className={"bg-slate-400 animate-pulse"}
           style={{
                 width,
-                height
+                height,
+                borderRadius:rounded
             }}
           >
       </div>

@@ -1,6 +1,8 @@
 import React from 'react'
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
+import { FaCartPlus } from "react-icons/fa";
+import Link from 'next/link';
 
 interface courseType{
     id: string,
@@ -17,7 +19,7 @@ interface props{
 
 const CourseCard = ({course}:props) => {
   return (
-    <a href={"/courses/"+course.id} className="group relative block overflow-hidden h-auto rounded-lg">
+    <a href={"/courses/"+course.id} className="shadow-xl group relative block overflow-hidden h-auto rounded-lg">
         <button
             className="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75"
         >
@@ -41,22 +43,31 @@ const CourseCard = ({course}:props) => {
 
             <h3 className="mt-4 text-sm font-medium text-gray-900 truncate">{course.name}</h3>
 
-            <p className="mt-1.5 text-sm text-gray-700">
+            <p className="mt-1.5 text-xs text-gray-700 truncate-2 ">
+            {
+                course.description
+            }
+            </p>
+
+            <div className="flex justify-between mt-4">
+                <span className='text-sm text-right block my-4 font-bold'>
                 {
-                    course.price >= 0?
-                        course.price
+                    course.price > 0?
+                        course.price + " L.E"
                     : 
                         "Free"
                 }
-            </p>
+                </span>
 
-            <form className="mt-4">
                 <button
-                    className="block w-full bg-primary text-white px-3 py-3 text-sm rounded-md font-medium transition hover:bg-transparent border-2 border-primary hover:text-primary"
+                    className="flex gap-2 transition-all bg-primary hover:bg-primary-hover text-sm p-3 items-center text-white rounded-md"
                 >
-                    Add to Cart
+                    <FaCartPlus />
+                    <span>
+                        Add to Cart
+                    </span>
                 </button>
-            </form>
+            </div>
         </div>
     </a>
   )

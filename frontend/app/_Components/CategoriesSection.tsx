@@ -1,3 +1,5 @@
+import SmallCard from '@/Components/Cards/SmallCard';
+import { ImageSkeleton } from '@/Components/Common';
 import Link from 'next/link';
 import React from 'react'
 
@@ -9,6 +11,12 @@ interface industry{
 }
 
 const CategoriesSection = ({industries}:{industries:industry[]}) => {
+    const handleImageSkeleton = ()=>{
+        let total = [];
+        for(let i=0; i < 6; i ++)
+            total.push(<ImageSkeleton height='180px' width='221px' rounded='10px' />)
+        return total
+    }
   return (
     <section>
     <div className="w-full px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
@@ -32,28 +40,10 @@ const CategoriesSection = ({industries}:{industries:industry[]}) => {
             {
                 industries && industries.length?
                     industries.map(industry=>(
-                        <Link
-                            key={industry.id}
-                            className="block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                            href={"/industries/"+industry.id}
-                        >
-                            <span className="inline-block rounded-lg bg-gray-50 p-1">
-                                <img 
-                                    width={"40px"}
-                                    src={process.env.NEXT_PUBLIC_HOST + industry.image} 
-                                    alt={industry.name} 
-                                />
-                            </span>
-
-                            <h2 className="mt-2 font-bold">{industry.name}</h2>
-
-                            <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-                                {industry.description}
-                            </p>
-                        </Link>
+                        <SmallCard item={industry} />
                     ))
                 :
-                    null
+                handleImageSkeleton()
             }
             
 
