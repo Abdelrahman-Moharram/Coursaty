@@ -7,11 +7,12 @@ const homeApiSlice = apiSlice.injectEndpoints({
                 query:()=>({
                     url:""
                 })
-            })
+            }),
     }) 
 })
 
 
 export const {
-    useGetIndexPageQuery
+    useGetIndexPageQuery,
+    
 } = homeApiSlice

@@ -1,6 +1,5 @@
 import SmallCard from '@/Components/Cards/SmallCard';
 import { ImageSkeleton } from '@/Components/Common';
-import Link from 'next/link';
 import React from 'react'
 
 interface industry{
@@ -14,7 +13,7 @@ const CategoriesSection = ({industries}:{industries:industry[]}) => {
     const handleImageSkeleton = ()=>{
         let total = [];
         for(let i=0; i < 6; i ++)
-            total.push(<ImageSkeleton height='180px' width='221px' rounded='10px' />)
+            total.push(<ImageSkeleton key={i} height='180px' width='221px' rounded='10px' />)
         return total
     }
   return (
@@ -40,7 +39,7 @@ const CategoriesSection = ({industries}:{industries:industry[]}) => {
             {
                 industries && industries.length?
                     industries.map(industry=>(
-                        <SmallCard item={industry} />
+                        <SmallCard item={industry} key={industry.id} />
                     ))
                 :
                 handleImageSkeleton()

@@ -9,7 +9,7 @@ interface props{
 const ImageSkeleton = ({width, height, rounded='0px'}:props) => {
     return (
       <div 
-          className={"bg-slate-400 animate-pulse"}
+          className={"bg-slate-200 animate-pulse"}
           style={{
                 width,
                 height,

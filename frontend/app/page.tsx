@@ -18,7 +18,7 @@ export default function Home() {
       <CategoriesSection industries={data?.industries} />
 
       <div>
-        <CardsSwiperWithTitle courses={data?.lowPricesCourses} title="Low Prices Courses" />
+        <CardsSwiperWithTitle courses={data?.topCourses} title="Top Courses" />
         <CardsSwiperWithTitle courses={data?.lowPricesCourses} title="Low Prices Courses" />
       </div>
     </div>

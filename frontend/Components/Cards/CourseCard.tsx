@@ -2,17 +2,28 @@ import React from 'react'
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { FaCartPlus } from "react-icons/fa";
-import Link from 'next/link';
+import CardBadge from './CardBadge';
 
-interface courseType{
-    id: string,
-    name: string,
-    image: string,
-    price: number,
-    description: string,
-    created_at: Date
-}
-
+interface categoryType{
+    id: string;
+    name: string;
+  }
+  
+  interface userType{
+    id: string;
+    first_name: string;
+    last_name: string;
+  }
+  interface courseType{
+      id: string,
+      name: string,
+      image: string,
+      price: number,
+      description: string,
+      created_at: Date,
+      instructor: userType;
+      category: categoryType;
+  }
 interface props{
     course:courseType
 }
@@ -39,7 +50,7 @@ const CourseCard = ({course}:props) => {
             />
 
         <div className="relative border border-gray-100 bg-white p-6">
-            <span className="whitespace-nowrap bg-green-600 text-white px-2 rounded-md py-1 text-xs font-extralight"> New </span>
+            <CardBadge title={course.category.name} href={'/categories/'+course.category.id} />
 
             <h3 className="mt-4 text-sm font-medium text-gray-900 truncate">{course.name}</h3>
 

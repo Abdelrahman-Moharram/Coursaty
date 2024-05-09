@@ -16,18 +16,25 @@ def index(request):
         many=True
     )
 
-    coursesSerial = CourseListSerial(
+    lowCoursesSerial = CourseListSerial(
         data= Course.objects.order_by('price')[:10],
+        many= True
+    )
+    topCoursesSerial = CourseListSerial(
+        data= Course.objects.all()[:10],
         many= True
     )
     if not bannerSerial.is_valid():
         pass
     if not industrySerial.is_valid():
         pass
-    if coursesSerial.is_valid():
+    if lowCoursesSerial.is_valid():
+        pass
+    if topCoursesSerial.is_valid():
         pass
     return response.Response(data={
         'images': bannerSerial.data,
         'industries': industrySerial.data,
-        'lowPricesCourses': coursesSerial.data
+        'lowPricesCourses': lowCoursesSerial.data,
+        'topCourses':topCoursesSerial.data
     }, status=status.HTTP_200_OK)
