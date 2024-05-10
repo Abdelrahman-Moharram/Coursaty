@@ -3,7 +3,7 @@ import { CourseCard, WideCard } from '../Cards'
 import ViewModeButtons from './ViewModeButtons';
 import { ImageSkeleton, Spinner } from '../Common';
 import { ImFileEmpty } from "react-icons/im";
-import EmptyList from '../Common/EmptyList';
+import EmptyContent from '../Common/EmptyContent';
 
 interface categoryType{
   id: string;
@@ -90,7 +90,7 @@ const AllCoursesList = ({courses}:props) => {
               :
               handleImageSkeleton()
           :
-            <EmptyList />
+            <EmptyContent />
           
         }
       </div>

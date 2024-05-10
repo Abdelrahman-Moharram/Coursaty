@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { IoIosHome } from "react-icons/io";
 
-const EmptyList = () => {
+const EmptyContent = () => {
   return (
     <div className='mx-auto '>
         <div className="text-4xl font-extrabold ">
@@ -23,4 +23,4 @@ const EmptyList = () => {
 )
 }
 
-export default EmptyList
+export default EmptyContent

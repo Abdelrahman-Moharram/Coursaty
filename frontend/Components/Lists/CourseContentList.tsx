@@ -18,8 +18,9 @@ interface section{
 
 interface props{
     sections:section[]
+    section_id: string
 }
-const CourseContentList = ({sections}:props) => {
+const CourseContentList = ({sections, section_id}:props) => {
     const [loading, setLoading] = useState(true)
     useEffect(()=>{
         setTimeout(()=>{
@@ -77,7 +78,12 @@ const CourseContentList = ({sections}:props) => {
                         {
                             section.content_set.map(content=>(
                                 content?.video?
-                                    <Link href={content.id} className='flex items-center' key={content.id}><IoMdArrowDropright /> {content.name}</Link>
+                                    <Link 
+                                        href={`?section=${section_id}&lecture=${content.id}`} 
+                                        className='flex items-center' key={content.id}
+                                    >
+                                        <IoMdArrowDropright /> {content.name}
+                                    </Link>
                                 :
                                     <p className='flex items-center' key={content.id}><IoMdArrowDropright /> {content.name}</p>
 

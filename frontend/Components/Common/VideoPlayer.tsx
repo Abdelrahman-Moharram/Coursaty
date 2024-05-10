@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
+import ImageSkeleton from './ImageSkeleton';
 
 interface lectureType{
     id: string;
@@ -12,14 +13,22 @@ interface lectureType{
   }
 
 const VideoPlayer = ({lecture}:props) => {
+  console.log(lecture);
+  
   return (
-    <div>
-      <video controls width="250">
+    <div className='px-6'>
+      <video controls width="100%">
+            {
+              process.env.NEXT_PUBLIC_HOST?
+                <>
+                  <source src={process.env.NEXT_PUBLIC_HOST+lecture.video} type="video/mp4" />
+                  "Download the"
+                  <Link href={process.env.NEXT_PUBLIC_HOST+lecture.video}>WEBM</Link>
+                </>
+              :
+              null
+            }
 
-            <source src={process.env.NEXT_PUBLIC_HOST+lecture} type="video/mp4" />
-
-                Download the
-            <Link href={process.env.NEXT_PUBLIC_HOST+lecture}>WEBM</Link>
             
         </video>
     </div>

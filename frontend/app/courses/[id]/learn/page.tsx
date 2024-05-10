@@ -1,4 +1,6 @@
 'use client'
+import { ImageSkeleton, Spinner } from '@/Components/Common'
+import CustomedSpinner from '@/Components/Common/CustomedSpinner'
 import VideoPlayer from '@/Components/Common/VideoPlayer'
 import CourseContentList from '@/Components/Lists/CourseContentList'
 import { useGetCourseContentQuery } from '@/redux/api/Courses'
@@ -12,37 +14,48 @@ interface contentType{
   file: string;
   video: string
 }
+
+interface sectionType{
+  id: string;
+  content_set: contentType[]
+}
+
 const page = () => {
     const {id}:{id:string} = useParams()
     const searchParams = useSearchParams()
-    const {data, isLoading} = useGetCourseContentQuery(id)
+    const {data} = useGetCourseContentQuery(id)
     const router = useRouter()
     const pathname = usePathname()
     
-    if(!searchParams.get('lecture_id') && data?.sections.length > 0){      
-     router.push(pathname + '?lecture_id=' + data?.sections[0].content_set[0].id)
+    if(!searchParams.get('lecture') || !searchParams.get('section') && data?.sections.length > 0){      
+     router.push(pathname + `?section=${data?.sections[0].id}&lecture=${data?.sections[0].content_set[0].id}`)
     }
-    const lecture = data?.sections?.content_set?.filter((content:contentType)=>(
-          content.id === searchParams.get('lecture_id')
-        )
-    )
-    console.log(searchParams.get('lecture_id'));
-    console.log(lecture);
+    const section = data?.sections.filter((section:sectionType)=>(
+      section.id === searchParams.get('section')
+    ))[0]
+    
+    const lecture = section?.content_set?.filter((content:contentType)=>content.id === searchParams.get('lecture'))[0] 
+
+    
     
   return (
     <div>
-      <div className="grid grid-cols-10 h-screen">
-        <div className="md:col-span-8 col-span-10 sm:col-span-10 bg-green-300"> 
+      <div className="grid grid-cols-10  h-[calc(100vh-64px)]">
+        <div className="md:col-span-8 col-span-10 sm:col-span-10"> 
         {
           lecture?
             <VideoPlayer lecture={lecture} />
-          :null
+          :
+            <CustomedSpinner />
         }
         </div>
-        
-        <div className="md:col-span-2 block bg-green-10 mx-3">
-            <CourseContentList sections={data?.sections} />
-        </div>
+        {
+          section?.id ?
+            <div className="md:col-span-2 block mx-3">
+                <CourseContentList section_id={section?.id} sections={data?.sections} />
+            </div>
+          :null
+        }
       </div>
     </div>
   )
