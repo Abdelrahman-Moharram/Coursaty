@@ -32,6 +32,11 @@ class IncludedContentSerial(serializers.ModelSerializer):
         model= Content
         depth=1
         fields=['id', 'name']
+class DetailedIncludedContentSerial(serializers.ModelSerializer):
+    class Meta:
+        model= Content
+        depth=1
+        fields=['id', 'name', 'file', 'video']
 
 class IncludedSectionSerial(serializers.ModelSerializer):
     content_set = IncludedContentSerial(many=True)
@@ -74,4 +79,14 @@ class CourseDetailsSerial(serializers.ModelSerializer):
             'price',
             'instructor',
             'section_set'
+        ]
+
+class SectionsSerial(serializers.ModelSerializer):
+    content_set = DetailedIncludedContentSerial(many=True)
+    class Meta:
+        model = Section
+        fields = [
+            'id',
+            'name',
+            'content_set'
         ]

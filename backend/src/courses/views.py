@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import response, status
-from .models import Course
-from .serializers import CourseListSerial, CourseDetailsSerial
+from .models import Course, Section
+from .serializers import CourseListSerial, CourseDetailsSerial, SectionsSerial
 from rest_framework.permissions import BasePermission, IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 
@@ -56,4 +56,15 @@ def Coursename(request, id):
     return response.Response(data={
         "name":course
     }, status=status.HTTP_200_OK)
-    
+
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def CourseLearn(request, id):
+    Sections = Section.objects.filter(course_id=id)
+    courseSerial = SectionsSerial(data=Sections, many=True)
+    if courseSerial.is_valid():
+        pass
+    return response.Response(data={
+        "sections":courseSerial.data
+    }, status=status.HTTP_200_OK)

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { ImageSkeleton } from '../Common';
 import { IoMdArrowDropright } from "react-icons/io";
+import Link from 'next/link';
 
 interface content_setType{
     id:string;
     name:string
+    video?:string | undefined;
+    file?:string | undefined
 }
 
 interface section{
@@ -73,7 +76,11 @@ const CourseContentList = ({sections}:props) => {
                     <div className="ml-4">
                         {
                             section.content_set.map(content=>(
-                                <p className='flex items-center' key={content.id}><IoMdArrowDropright /> {content.name}</p>
+                                content?.video?
+                                    <Link href={content.id} className='flex items-center' key={content.id}><IoMdArrowDropright /> {content.name}</Link>
+                                :
+                                    <p className='flex items-center' key={content.id}><IoMdArrowDropright /> {content.name}</p>
+
                             ))
                         }
                     </div>
