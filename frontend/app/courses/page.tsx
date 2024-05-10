@@ -1,8 +1,8 @@
 'use client'
 import AllCoursesList from '@/Components/Lists/AllCoursesList'
 import { useGetAllCoursesPageQuery } from '@/redux/api/Courses'
-import React, { useCallback, useState } from 'react'
-import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation'
+import React, { useCallback } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import Paginition from '@/Components/Lists/Paginition'
 
 
@@ -69,7 +69,7 @@ const page = () => {
     )
 
     return (
-        <div className='p-5'>
+        <div className='lg:w-[80%] w-full mx-auto bg-white rounded-lg my-3 overflow-hiddenw-[80%] p-5'>
 
             <AllCoursesList courses={data?.courses} />
             <div className='flex justify-center my-10 font-extrabold'>

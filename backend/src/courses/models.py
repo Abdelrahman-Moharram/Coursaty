@@ -62,6 +62,7 @@ class Course(models.Model):
     instructor          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     category            = models.ForeignKey(Category, on_delete=models.PROTECT)
     subcategory         = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
+    industry            = models.ForeignKey(Industry, on_delete=models.PROTECT, null=True, blank=True)
     image               = models.ImageField(default="coursatty-high-resolution-logo-white.png",upload_to=coursesave, null=True)
     is_deleted          = models.BooleanField(default=False)
     created_at          = models.DateTimeField(auto_now=True, auto_now_add=False)

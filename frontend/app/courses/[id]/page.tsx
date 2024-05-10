@@ -1,16 +1,28 @@
-"use client"
-import { useParams } from 'next/navigation'
-import React from 'react'
+import type { Metadata } from 'next'
+import DetailsPage from './_components/Details.page'
 
-const page = () => {
-    const params = useParams()
-    
-    
-  return (
-    <div>
-      {params?.id}
+type Props = {
+  params: { id: string }
+}
+export async function generateMetadata(
+  { params }: Props,
+): Promise<Metadata> {
+  // read route params
+  const {id} = params
+   // fetch data
+  //  const data = await fetch(`http://localhost:8000/api/courses/${id}/name`).then((res) => res.json())
+ 
+  
+   return {
+     title: `Coursatty`,
+   }
+ }
+
+export default function Page({ params }: Props) {
+  
+  return(
+    <div className='lg:w-[80%] w-full mx-auto bg-white rounded-lg my-3 overflow-hiddenw-[80%] p-5'>
+      <DetailsPage id={params.id} />
     </div>
   )
 }
-
-export default page

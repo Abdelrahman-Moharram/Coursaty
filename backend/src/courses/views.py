@@ -39,12 +39,21 @@ def index(request):
 @api_view(['GET'])
 @permission_classes((AllowAny,))
 def CourseDetails(request, id):
-    course = Course.objects.filter(id=id)
-    courseSerial = CourseDetailsSerial(data=course, many=True, allow_null=True)
+    course = Course.objects.get(id=id)
+    courseSerial = CourseDetailsSerial(data=[course], many=True, allow_null=True)
     
     if courseSerial.is_valid():
         pass
     return response.Response(data={
-        "course":courseSerial.data
+        "course":courseSerial.data[0]
+    }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def Coursename(request, id):
+    course = Course.objects.get(id=id).name
+    
+    return response.Response(data={
+        "name":course
     }, status=status.HTTP_200_OK)
     

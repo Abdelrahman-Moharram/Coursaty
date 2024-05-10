@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Industry, Course, Category, Section, Content
+from .models import Industry, Course, Category, Section, Content, SubCategory, Industry
 from accounts.serializers import IncludedUserSerial
 
 class IndustriesSerial(serializers.ModelSerializer):
@@ -8,10 +8,24 @@ class IndustriesSerial(serializers.ModelSerializer):
         fields = ['id', 'image', 'name', 'description', ]
 
 
+class IncludedIndustrySerial(serializers.ModelSerializer):
+    class Meta:
+        model= Industry
+        fields=['id', 'name']
+
+
 class IncludedCategorySerial(serializers.ModelSerializer):
+    industry = IncludedIndustrySerial(many=False)
     class Meta:
         model= Category
-        fields=['id', 'name']
+        fields=['id', 'name', 'industry']
+
+
+class IncludedSubCategorySerial(serializers.ModelSerializer):
+    category = IncludedCategorySerial(many=False)
+    class Meta:
+        model= SubCategory
+        fields=['id', 'name', 'category']
 
 class IncludedContentSerial(serializers.ModelSerializer):
     class Meta:
@@ -45,7 +59,7 @@ class CourseListSerial(serializers.ModelSerializer):
 
 class CourseDetailsSerial(serializers.ModelSerializer):
     instructor      = IncludedUserSerial()
-    category        = IncludedCategorySerial()
+    subcategory     = IncludedSubCategorySerial()
     section_set     = IncludedSectionSerial(many=True)
     class Meta:
         model = Course
@@ -54,7 +68,7 @@ class CourseDetailsSerial(serializers.ModelSerializer):
             'id',
             'name',
             'description',
-            'category',
+            'subcategory',
             'image',
             'created_at',
             'price',
