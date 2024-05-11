@@ -74,13 +74,13 @@ const CourseContentList = ({sections, section_id}:props) => {
                     </span>
                     </summary>
 
-                    <div className="ml-4">
+                    <div className="ml-4 mt-5">
                         {
                             section.content_set.map(content=>(
                                 content?.video?
                                     <Link 
                                         href={`?section=${section_id}&lecture=${content.id}`} 
-                                        className='flex items-center' key={content.id}
+                                        className='flex items-center hover:underline' key={content.id}
                                     >
                                         <IoMdArrowDropright /> {content.name}
                                     </Link>

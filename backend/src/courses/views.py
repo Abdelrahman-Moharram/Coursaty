@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, HttpResponse
 from rest_framework import response, status
 from .models import Course, Section
 from .serializers import CourseListSerial, CourseDetailsSerial, SectionsSerial
-from rest_framework.permissions import BasePermission, IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
+from .permissions import IsOwnCourse
+from .Payments import paypal_place_order
+
 
 
 def to_int(val, default):
@@ -59,8 +62,9 @@ def Coursename(request, id):
 
 
 @api_view(['GET'])
-@permission_classes((AllowAny,))
+@permission_classes((IsAuthenticated, IsOwnCourse))
 def CourseLearn(request, id):
+    print(request.user)
     Sections = Section.objects.filter(course_id=id)
     courseSerial = SectionsSerial(data=Sections, many=True)
     if courseSerial.is_valid():
@@ -68,3 +72,14 @@ def CourseLearn(request, id):
     return response.Response(data={
         "sections":courseSerial.data
     }, status=status.HTTP_200_OK)
+
+
+def create_payment(request):
+    payment = paypal_place_order()
+    if payment.create():
+        for link in payment.links:
+            if link.method == "REDIRECT":
+                redirect_url = link.href
+                return redirect(redirect_url)
+    else:
+        return response.Response("Error: " + payment.error, status=status.HTTP_400_BAD_REQUEST)

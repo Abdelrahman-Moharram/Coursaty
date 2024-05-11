@@ -4,7 +4,7 @@ import CustomedSpinner from '@/Components/Common/CustomedSpinner'
 import VideoPlayer from '@/Components/Common/VideoPlayer'
 import CourseContentList from '@/Components/Lists/CourseContentList'
 import { useGetCourseContentQuery } from '@/redux/api/Courses'
-import { useParams, usePathname, useSearchParams, useRouter } from 'next/navigation'
+import { useParams, usePathname, useSearchParams, useRouter, notFound } from 'next/navigation'
 
 import React from 'react'
 
@@ -27,8 +27,12 @@ const page = () => {
     const router = useRouter()
     const pathname = usePathname()
     
-    if(!searchParams.get('lecture') || !searchParams.get('section') && data?.sections.length > 0){      
-     router.push(pathname + `?section=${data?.sections[0].id}&lecture=${data?.sections[0].content_set[0].id}`)
+    if(!searchParams.get('lecture') || !searchParams.get('section')){
+      setTimeout(()=>{
+        router.push(pathname + `?section=${data?.sections[0].id}&lecture=${data?.sections[0].content_set[0].id}`)
+        if(!data?.sections[0].content_set[0].id)
+          notFound();
+      },1000)      
     }
     const section = data?.sections.filter((section:sectionType)=>(
       section.id === searchParams.get('section')

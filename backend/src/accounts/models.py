@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
     PermissionsMixin
 )
 import uuid
+from courses.models import Course
 def imagesave(instance,filename):
     extension = filename.split(".")[-1]
     return "users/%s/%s.%s"%(instance.id, extension)
@@ -52,7 +53,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active           = models.BooleanField(default=True)
     is_staff            = models.BooleanField(default=False)
     is_superuser        = models.BooleanField(default=False)
-
+    courses             = models.ManyToManyField(Course)
+    
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
