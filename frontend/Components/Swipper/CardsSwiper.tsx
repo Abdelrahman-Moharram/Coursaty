@@ -12,15 +12,25 @@ import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
 
 import { CourseCard } from '@/Components/Cards';
-import { Divider } from '@/Components/Common';
+interface categoryType{
+  id: string;
+  name: string;
+}
 
+interface userType{
+  id: string;
+  first_name: string;
+  last_name: string;
+}
 interface courseType{
-    id: string,
-    name: string,
-    image: string,
-    price: number,
-    description: string,
-    created_at: Date
+  id: string,
+  name: string,
+  image: string,
+  price: number,
+  description: string,
+  created_at: Date,
+  instructor: userType;
+  category: categoryType;
 }
 
 interface props{

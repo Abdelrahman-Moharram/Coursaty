@@ -23,7 +23,7 @@ const ViewModeButtons = ({viewMode, handleViewMode}:props) => {
         <button
             onClick={()=>handleViewMode(1)}
             className={"inline-block border-e p-3 focus:relative "
-                + (viewMode == 1?"text-white bg-black shadow-md":"text-black hover:bg-gray-50")
+                + (viewMode === 1?"text-white bg-black shadow-md":"text-black hover:bg-gray-50")
             }
             title="Wide View"
         >

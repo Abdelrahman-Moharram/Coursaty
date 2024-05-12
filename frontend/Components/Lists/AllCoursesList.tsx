@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { CourseCard, WideCard } from '../Cards'
 import ViewModeButtons from './ViewModeButtons';
 import { ImageSkeleton, Spinner } from '../Common';
-import { ImFileEmpty } from "react-icons/im";
 import EmptyContent from '../Common/EmptyContent';
 
 interface categoryType{

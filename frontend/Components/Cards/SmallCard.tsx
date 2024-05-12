@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link'
 import React from 'react'
 
@@ -19,10 +20,12 @@ const SmallCard = ({item}:props) => {
         href={"/industries/"+item.id}
     >
         <span className="inline-block rounded-lg bg-gray-50 p-1">
-            <img 
-                width={"40px"}
+            <Image
+                height={40}
+                width={40}
                 src={process.env.NEXT_PUBLIC_HOST + item.image} 
                 alt={item.name} 
+                unoptimized
             />
         </span>
 

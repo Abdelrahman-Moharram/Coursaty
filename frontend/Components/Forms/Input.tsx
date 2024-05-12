@@ -1,10 +1,10 @@
-import { ChangeEvent } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 interface Props {
 	labelId: string;
 	type: string;
-	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+	onChange: () => void;
 	value: string;
 	children: React.ReactNode;
 	link?: {

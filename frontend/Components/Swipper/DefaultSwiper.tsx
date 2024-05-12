@@ -10,6 +10,7 @@ import 'swiper/css/navigation';
 
 // import required modules
 import { Pagination, Navigation } from 'swiper/modules';
+import Image from 'next/image';
 
 interface image{
   id: string
@@ -21,7 +22,7 @@ interface props{
   isLoading: boolean
   images: image[]
 }
-const DefaultSwiper = ({isLoading, images}: props) => {
+const DefaultSwiper = ({images}: props) => {
   return (
     <Swiper
         slidesPerView={1}
@@ -36,11 +37,16 @@ const DefaultSwiper = ({isLoading, images}: props) => {
       >
           <>
             {
-              images.map(({id, image, description, title})=>(
+              images.map(({id, image})=>(
                 <SwiperSlide key={id}>
-                  <img 
-                    className='inset-0 w-full object-cover h-[400px]'
+                  <Image
                     src={process.env.NEXT_PUBLIC_HOST+image}
+                    alt='banner image'
+                    className='inset-0 w-full object-cover h-[400px]'
+                    width={2000}
+                    height={500}
+                    unoptimized
+                    priority
                   />
                 </SwiperSlide>
               ))

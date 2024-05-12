@@ -22,7 +22,7 @@ const VideoPlayer = ({lecture}:props) => {
               process.env.NEXT_PUBLIC_HOST?
                 <>
                   <source src={process.env.NEXT_PUBLIC_HOST+lecture.video} type="video/mp4" />
-                  "Download the"
+                  Download the
                   <Link href={process.env.NEXT_PUBLIC_HOST+lecture.video}>WEBM</Link>
                 </>
               :

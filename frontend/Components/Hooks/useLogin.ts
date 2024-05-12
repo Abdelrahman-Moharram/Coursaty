@@ -4,7 +4,6 @@ import { useAppDispatch } from '@/redux/hooks';
 import { useLoginMutation } from '@/redux/features/authApiSlice';
 import { setAuth } from '@/redux/features/authSlice';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
 export default function useLogin() {
 	const router = useRouter();
 	const dispatch = useAppDispatch();

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import CardBadge from './CardBadge'
+import Image from 'next/image';
 
 interface categoryType{
     id: string;
@@ -36,10 +37,12 @@ const WideCard = ({course}:props) => {
             <div
                 className="w-[20%] min-w-[100px]"
             >
-                <img 
+                <Image
                     src={process.env.NEXT_PUBLIC_HOST+course.image} 
-                    width="100%"
-                    alt="" 
+                    width={500}
+                    height={500}
+                    alt={course.name} 
+                    unoptimized
                 />
             </div>
 

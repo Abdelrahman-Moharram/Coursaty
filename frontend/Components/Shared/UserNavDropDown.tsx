@@ -1,10 +1,12 @@
 'use client';
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { setLogout } from '@/redux/features/authSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { useLogoutMutation } from '@/redux/features/authApiSlice';
+import Image from 'next/image';
+import { ImageSkeleton } from '../Common';
 interface user {
     first_name:string;
     last_name: string;
@@ -16,6 +18,7 @@ interface user {
 interface Props{
     user:user
 }
+
 const UserNavDropDown = ({user}:Props) => {
     const dispatch = useAppDispatch();
     const [logout] = useLogoutMutation();
@@ -30,24 +33,31 @@ const UserNavDropDown = ({user}:Props) => {
     function classNames(...classes:string[]) {
         return classes.filter(Boolean).join(' ')
         }
+    const [isClient, setIsClient] = useState(false)
+        useEffect(() => {
+          setIsClient(true)
+        }, [])
     return (
         <Menu as="div" className="relative inline-block text-left">
           <div>
               <MenuButton className=" items-center inline-flex w-full justify-center gap-x-2 rounded-full px-3 py-2 text-sm font-semibold transition text-black bg-gray-100 hover:bg-gray-200">
               {
-                user?.image?
+                user?.image && isClient?
                   <div className='flex items-center gap-2 '>
                       <span className="font-semibold">
                         {user?.first_name + " " + user?.last_name}              
                       </span>
-                      <img
+                      <Image
+                          width={100}
+                          height={100}
                           className="h-8 w-8 rounded-full"
                           src={process.env.NEXT_PUBLIC_HOST+user?.image}
                           alt="user logo"
+                          unoptimized
                       />
                   </div>
                 :
-                null
+                <ImageSkeleton width='200px' height='30px' rounded='30px' />
               }
 
               

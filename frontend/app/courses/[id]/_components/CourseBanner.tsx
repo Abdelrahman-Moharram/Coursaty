@@ -1,4 +1,5 @@
 import { ImageSkeleton } from '@/Components/Common';
+import Image from 'next/image';
 import React from 'react'
 
 interface props{
@@ -10,7 +11,11 @@ const CourseBanner = ({image}:props) => {
         <div className='w-[440px] h-auto'>
             {
             image?
-                <img 
+                <Image
+                    width="0"
+                    height="0"
+                    sizes="100vw"
+                    alt='banner image'
                     src={process.env.NEXT_PUBLIC_HOST+image}
                 />
             :

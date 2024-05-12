@@ -3,6 +3,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { FaCartPlus } from "react-icons/fa";
 import CardBadge from './CardBadge';
+import Image from 'next/image';
 
 interface categoryType{
     id: string;
@@ -36,14 +37,16 @@ const CourseCard = ({course}:props) => {
         >
             <span className="sr-only">Wishlist</span>
             {
-                true?
-                    <FaRegHeart />
-                :
-                    <FaHeart />
+                <FaRegHeart />
+                
+                // <FaHeart />
             }
         </button>
 
-            <img
+            <Image
+                width={500}
+                height={300}
+                unoptimized
                 src={process.env.NEXT_PUBLIC_HOST+course.image}
                 alt={course.name}
                 className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"

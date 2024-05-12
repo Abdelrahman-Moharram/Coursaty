@@ -6,6 +6,7 @@ import UserNavDropDown from './UserNavDropDown';
 import CoursesDropdown from '../Dropdowns/CoursesDropdown';
 import { useState } from 'react';
 import { SiCoursera } from "react-icons/si";
+import Image from 'next/image';
 
 export default function Navbar() {
     const [coursesToggler, setCoursesToggler] = useState(false)
@@ -62,8 +63,9 @@ export default function Navbar() {
                 <div className="md:flex md:items-center md:gap-12">
                     <Link className="block text-teal-600" href="/">
                         <span className="sr-only">Home</span>
-                        <img
-                            width='180px'
+                        <Image
+                            width={180}
+                            height={50}
                             src='/coursatty_high_resolution_logo_black_transparent.png' 
                             alt="Logo" 
                         />
