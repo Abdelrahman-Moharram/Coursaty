@@ -3,6 +3,7 @@ import ButtonLink from '@/Components/Common/ButtonLink';
 import InfoSkeleton from '@/Components/Common/InfoSkeleton'
 import { GrMoney } from "react-icons/gr";
 import React from 'react'
+import StripePayment from './StripePayment';
 
 interface IndustryType{
     id: string;
@@ -35,14 +36,15 @@ interface subcategoryType{
       subcategory: subcategoryType;
   }
 interface props{
-    course:courseType
+    course:courseType;
+    isOwnCourse:boolean
 }
 interface item{
     href: string;
     title: string;
     icon?: string | undefined
 }
-const CourseInfo = ({course}:props) => {
+const CourseInfo = ({course, isOwnCourse}:props) => {
     const BreadcrumbList = ():item[] | undefined =>{
         if(course)
             return[
@@ -65,8 +67,15 @@ const CourseInfo = ({course}:props) => {
                         {
                             course?.price?
                             <div className='mb-7'>
-                                <p className='text-[17px]'> {course?.price} EGP</p>
-                                <ButtonLink href=''> <GrMoney /> Buy Now</ButtonLink>
+                                {
+                                    !isOwnCourse?
+                                        <>
+                                            <p className='text-[17px]'> {course?.price} EGP</p>
+                                            <StripePayment course_id={course.id} />
+                                        </>
+                                    :
+                                        <ButtonLink href={course.id+'/learn'}>Go To Course</ButtonLink>
+                                }
                             </div>
                             :null
                         }

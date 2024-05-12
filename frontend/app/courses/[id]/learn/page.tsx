@@ -26,26 +26,30 @@ const page = () => {
     const {data} = useGetCourseContentQuery(id)
     const router = useRouter()
     const pathname = usePathname()
+
+    let lecture_id = searchParams.get('lecture')
+    let section_id = searchParams.get('section')
     
-    if(!searchParams.get('lecture') || !searchParams.get('section')){
+    if(!lecture_id || !section_id){      
       setTimeout(()=>{
-        router.push(pathname + `?section=${data?.sections[0].id}&lecture=${data?.sections[0].content_set[0].id}`)
-        if(!data?.sections[0].content_set[0].id)
+        if(data?.sections[0].content_set[0].id)
+          router.push(pathname + `?section=${data?.sections[0].id}&lecture=${data?.sections[0].content_set[0].id}`)
+        else
           notFound();
       },1000)      
     }
     const section = data?.sections.filter((section:sectionType)=>(
-      section.id === searchParams.get('section')
+      section.id === section_id
     ))[0]
     
-    const lecture = section?.content_set?.filter((content:contentType)=>content.id === searchParams.get('lecture'))[0] 
+    const lecture = section?.content_set?.filter((content:contentType)=>content.id === lecture_id)[0] 
 
     
     
   return (
     <div>
       <div className="grid grid-cols-10  h-[calc(100vh-64px)]">
-        <div className="md:col-span-8 col-span-10 sm:col-span-10"> 
+        <div className="md:col-span-8 col-span-10"> 
         {
           lecture?
             <VideoPlayer lecture={lecture} />
@@ -55,7 +59,7 @@ const page = () => {
         </div>
         {
           section?.id ?
-            <div className="md:col-span-2 block mx-3">
+            <div className="md:col-span-2 block mx-3 col-span-10">
                 <CourseContentList section_id={section?.id} sections={data?.sections} />
             </div>
           :null

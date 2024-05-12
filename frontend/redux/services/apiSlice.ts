@@ -23,7 +23,7 @@ const baseQueryWithReauth: BaseQueryFn<
 		if (!mutex.isLocked()) {
 			const release = await mutex.acquire();
 			try {
-				const refreshResult = await baseQuery(
+				const refreshResult : any = await baseQuery(
 					{
 						url: '/users/jwt/refresh/',
 						method: 'POST',

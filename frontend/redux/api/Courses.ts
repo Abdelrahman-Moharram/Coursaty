@@ -24,6 +24,13 @@ const homeApiSlice = apiSlice.injectEndpoints({
                     method:'GET',
                 })
             }),
+
+            getUserCourses:builder.query({
+                query:()=>({
+                    url:`courses/user`,
+                    method:'GET',
+                })
+            }),
             
     }) 
 })
@@ -32,5 +39,6 @@ const homeApiSlice = apiSlice.injectEndpoints({
 export const {
     useGetAllCoursesPageQuery,
     useGetCourseDetailsPageQuery,
-    useGetCourseContentQuery
+    useGetCourseContentQuery,
+    useGetUserCoursesQuery
 } = homeApiSlice

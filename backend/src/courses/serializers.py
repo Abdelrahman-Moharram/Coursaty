@@ -45,6 +45,22 @@ class IncludedSectionSerial(serializers.ModelSerializer):
         depth=1
         fields=['id', 'name', 'content_set']
 
+
+
+class BaseCourseListSerial(serializers.ModelSerializer):
+
+    class Meta:
+        model = Course
+        fields = [
+            'id',
+            'name',
+            'description',
+            'image',
+        ]
+
+
+
+
 class CourseListSerial(serializers.ModelSerializer):
     instructor      = IncludedUserSerial()
     category        = IncludedCategorySerial()

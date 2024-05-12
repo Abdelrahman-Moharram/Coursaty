@@ -1,13 +1,13 @@
-from django.shortcuts import redirect, HttpResponse
+from django.shortcuts import redirect
 from rest_framework import response, status
 from .models import Course, Section
-from .serializers import CourseListSerial, CourseDetailsSerial, SectionsSerial
+from .serializers import CourseListSerial, CourseDetailsSerial, SectionsSerial, BaseCourseListSerial
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from .permissions import IsOwnCourse
-from .Payments import paypal_place_order
-
-
+from .Payments import apply_stripe_payment
+from rest_framework.renderers import JSONRenderer
+from django.conf import settings
 
 def to_int(val, default):
     if val:
@@ -47,8 +47,12 @@ def CourseDetails(request, id):
     
     if courseSerial.is_valid():
         pass
+    if request.user:
+        isOwnCourse = len(request.user.courses.filter(id=id)) > 0
+    
     return response.Response(data={
-        "course":courseSerial.data[0]
+        "course":courseSerial.data[0],
+        "isOwnCourse": isOwnCourse
     }, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -66,20 +70,44 @@ def Coursename(request, id):
 def CourseLearn(request, id):
     print(request.user)
     Sections = Section.objects.filter(course_id=id)
-    courseSerial = SectionsSerial(data=Sections, many=True)
-    if courseSerial.is_valid():
+    courseSectionsSerial = SectionsSerial(data=Sections, many=True)
+    if courseSectionsSerial.is_valid():
         pass
     return response.Response(data={
-        "sections":courseSerial.data
+        "sections":courseSectionsSerial.data
     }, status=status.HTTP_200_OK)
 
 
-def create_payment(request):
-    payment = paypal_place_order()
-    if payment.create():
-        for link in payment.links:
-            if link.method == "REDIRECT":
-                redirect_url = link.href
-                return redirect(redirect_url)
-    else:
-        return response.Response("Error: " + payment.error, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def UserCoursesList(request):
+    coursesSerial = BaseCourseListSerial(data=request.user.courses.all(), many=True)
+    if coursesSerial.is_valid():
+        pass
+    return response.Response(data={
+        "courses":coursesSerial.data
+    }, status=status.HTTP_200_OK)
+
+
+@renderer_classes((JSONRenderer))
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def Stripe_payment(request, id):
+    if len(request.user.courses.filter(id=id)) > 0:
+        response.Response({'message': 'you already have this course'}, status=status.HTTP_400_BAD_REQUEST)
+        return redirect(settings.DOMAIN + 'courses/'+id)
+    course = Course.objects.filter(id=id).first()
+    if not course:
+        response.Response({'message': 'Course Not Found'}, status=status.HTTP_404_NOT_FOUND)
+        return redirect(settings.DOMAIN + 'courses/'+id)
+    checkout_session, success = apply_stripe_payment(id, price=course.price, name=course.name)
+    if success:
+        request.user.courses.add(course)
+        return redirect(checkout_session.url)
+    return response.Response(
+        {
+            'message': 'something went wrong',
+        },
+        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+    )
+    

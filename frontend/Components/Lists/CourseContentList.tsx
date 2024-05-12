@@ -18,7 +18,7 @@ interface section{
 
 interface props{
     sections:section[]
-    section_id: string
+    section_id?: string
 }
 const CourseContentList = ({sections, section_id}:props) => {
     const [loading, setLoading] = useState(true)
@@ -77,7 +77,7 @@ const CourseContentList = ({sections, section_id}:props) => {
                     <div className="ml-4 mt-5">
                         {
                             section.content_set.map(content=>(
-                                content?.video?
+                                content?.video && section_id?
                                     <Link 
                                         href={`?section=${section_id}&lecture=${content.id}`} 
                                         className='flex items-center hover:underline' key={content.id}

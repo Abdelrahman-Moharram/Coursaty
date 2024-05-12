@@ -3,15 +3,33 @@
 import { useAppSelector} from '@/redux/hooks';
 import Link from 'next/link';
 import UserNavDropDown from './UserNavDropDown';
+import CoursesDropdown from '../Dropdowns/CoursesDropdown';
+import { useState } from 'react';
+import { SiCoursera } from "react-icons/si";
 
 export default function Navbar() {
+    const [coursesToggler, setCoursesToggler] = useState(false)
 
 
 	const { isAuthenticated, user, isLoading } = useAppSelector(state => state.auth);
-
+    const handleCourseDropdown = () =>{
+        setCoursesToggler(!coursesToggler)
+    }
 	const authLinks = () => (
 		<>
+            <div 
+                onClick={()=>setCoursesToggler(!coursesToggler)} 
+                className="relative rounded-full p-4 transition-all cursor-pointer bg-gray-100 hover:bg-gray-200"
+            >
+                <SiCoursera />
+            </div>
+            {
+                coursesToggler?
+                    <CoursesDropdown handleCourseDropdown={handleCourseDropdown} />
+                :null
+            }
 			<UserNavDropDown user={user} />
+
 		</>
 	);
 
