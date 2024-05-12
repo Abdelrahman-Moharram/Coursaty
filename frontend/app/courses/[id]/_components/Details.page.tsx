@@ -12,7 +12,6 @@ interface props{
 const DetailsPage = ({id}:props) => {
 
     const {data, isLoading} = useGetCourseDetailsPageQuery(id)
-   console.log(data?.course?.section_set);
    
   return (
     <div className="px-4">

@@ -68,7 +68,6 @@ def Coursename(request, id):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, IsOwnCourse))
 def CourseLearn(request, id):
-    print(request.user)
     Sections = Section.objects.filter(course_id=id)
     courseSectionsSerial = SectionsSerial(data=Sections, many=True)
     if courseSectionsSerial.is_valid():

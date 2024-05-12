@@ -54,7 +54,6 @@ const page = () => {
         prev.push.apply(prev, data?.courses)
         return prev
       })
-      console.log(data?.courses);
     },[page])
     
   return (

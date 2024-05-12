@@ -13,7 +13,6 @@ interface lectureType{
   }
 
 const VideoPlayer = ({lecture}:props) => {
-  console.log(lecture);
   
   return (
     <div className='px-6'>
