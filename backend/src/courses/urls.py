@@ -1,5 +1,13 @@
 from django.urls import path
-from .views import index, CourseDetails, Coursename, CourseLearn, Stripe_payment, UserCoursesList
+from .views import (
+    index,
+    CourseDetails,
+    Coursename,
+    CourseLearn,
+    Stripe_payment,
+    UserCoursesList,
+    GetCoursesFromDep
+)
 app_name = 'home'
 
 urlpatterns = [
@@ -8,5 +16,13 @@ urlpatterns = [
     path('<str:id>/', CourseDetails, name="CourseDetails"),
     path('<str:id>/learn', CourseLearn, name="CourseDetails"),
     path('<str:id>/name', Coursename, name="CourseName"),
+    
     path('<str:id>/buy/stripe', Stripe_payment, name="CourseBuy"),
+    
+    path("cat/<str:id>", GetCoursesFromDep, name="GetCoursesFromDep"),
+    
+    
+
+
+
 ]

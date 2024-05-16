@@ -31,6 +31,7 @@ const homeApiSlice = apiSlice.injectEndpoints({
                     method:'GET',
                 })
             }),
+
             
     }) 
 })

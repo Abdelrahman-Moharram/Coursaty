@@ -1,9 +1,9 @@
 from rest_framework import response, status
 from .models import Banner, BannerImage
 from courses.models import Industry, Course
-from courses.serializers import IndustriesSerial, CourseListSerial
+from courses.serializers import IndustriesSerial, CourseListSerial, IndustrySerial
 from .serializers import BannerImageSerial
-from rest_framework.permissions import BasePermission, IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, permission_classes
 
 @api_view(['GET'])
@@ -37,4 +37,33 @@ def index(request):
         'industries': industrySerial.data,
         'lowPricesCourses': lowCoursesSerial.data,
         'topCourses':topCoursesSerial.data
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def GetAllIndustries(request):
+    industrySerial  = IndustriesSerial(data=
+        Industry.objects.all(), 
+        many=True
+    )
+    if not industrySerial.is_valid():
+        pass
+    return response.Response(data={
+       'industries': industrySerial.data,
+    }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def GetIndustryById(request, id):
+
+    industrySerial  = IndustrySerial(
+        data=Industry.objects.select_related().filter(id=id), 
+        many=True, 
+        allow_null=True
+    )
+    if not industrySerial.is_valid():
+        pass
+    return response.Response(data={
+       'industry': industrySerial.data[0],
     }, status=status.HTTP_200_OK)

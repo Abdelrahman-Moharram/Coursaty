@@ -66,10 +66,13 @@ const AllCoursesList = ({courses}:props) => {
           </div>
         :null
       }
-      <div className='flex justify-between'>
-        <div className=""></div>
-        <ViewModeButtons viewMode={viewMode} handleViewMode={handleViewMode} />
-      </div>
+      {
+        courses?.length?
+          <div className='flex justify-end'>
+            <ViewModeButtons viewMode={viewMode} handleViewMode={handleViewMode} />
+          </div>
+        :null
+      }
       <div className={"mt-4 grid gap-4 " + (viewMode == 1 ? "sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4" : "")}>
 
         {

@@ -2,11 +2,11 @@ from rest_framework import serializers
 from .models import Industry, Course, Category, Section, Content, SubCategory, Industry
 from accounts.serializers import IncludedUserSerial
 
+
 class IndustriesSerial(serializers.ModelSerializer):
     class Meta:
         model = Industry
-        fields = ['id', 'image', 'name', 'description', ]
-
+        fields = ['id', 'image', 'name', 'description']
 
 class IncludedIndustrySerial(serializers.ModelSerializer):
     class Meta:
@@ -20,6 +20,15 @@ class IncludedCategorySerial(serializers.ModelSerializer):
         model= Category
         fields=['id', 'name', 'industry']
 
+class IncludedSubCategoryBaseSerial(serializers.ModelSerializer):
+    class Meta:
+        model= SubCategory
+        fields=['id', 'name']
+
+class IncludedCategoryWithImageSerial(serializers.ModelSerializer):
+    class Meta:
+        model= Category
+        fields=['id', 'name', 'description', 'image']
 
 class IncludedSubCategorySerial(serializers.ModelSerializer):
     category = IncludedCategorySerial(many=False)
@@ -106,3 +115,31 @@ class SectionsSerial(serializers.ModelSerializer):
             'name',
             'content_set'
         ]
+class IndustrySerial(serializers.ModelSerializer):
+    # courses_set = BaseCourseListSerial(many=True)
+    class Meta:
+        model = Industry
+        fields = '__all__' 
+    def to_representation(self, instance):
+        courses_data = CourseListSerial(data=Course.objects.filter(industry=instance.id), many=True)
+        if courses_data.is_valid():
+            pass
+        CategorySerial = IncludedCategoryWithImageSerial(data=Category.objects.filter(industry=instance.id)[:10], many=True)
+        SubCategorySerial = IncludedSubCategoryBaseSerial(data=SubCategory.objects.filter(category__industry__id=instance.id), many=True)
+
+
+        if CategorySerial.is_valid():
+            pass
+        if SubCategorySerial.is_valid():
+            pass
+        representation = dict()
+        representation["id"] = instance.id
+        representation["image"] = "/media/"+str(instance.image)
+        representation["name"] = instance.name
+        representation["description"] = instance.description
+        representation["courses"] = courses_data.data
+        representation["Categories"] = CategorySerial.data
+        representation["SubCategories"] = SubCategorySerial.data
+
+        return representation
+        

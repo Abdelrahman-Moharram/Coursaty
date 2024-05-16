@@ -7,17 +7,20 @@ interface itemType{
     name:string;
     image:string;
     description:string | undefined
+    href?: string| undefined
 }
 
 interface props{
-    item:itemType
+    item:itemType;
+    preLink: string
 }
-const SmallCard = ({item}:props) => {
+const SmallCard = ({item, preLink}:props) => {
+   
   return (
     <Link
         key={item.id}
         className="block rounded-xl border border-gray-100 p-4 shadow-lg hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-        href={"/industries/"+item.id}
+        href={`/${preLink}/`+item.id}
     >
         <span className="inline-block rounded-lg bg-gray-50 p-1">
             <Image

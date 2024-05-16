@@ -32,7 +32,7 @@ const WideCard = ({course}:props) => {
         return date.toDateString()
     }
   return (
-    <Link href={"/courses/"+course.id} className="rounded-xl bg-white p-4 ring ring-indigo-50 sm:p-6 lg:p-8">
+    <Link href={"/courses/"+course.id} className="rounded-xl bg-white p-4 shadow-default-sm sm:p-6 lg:p-8">
         <div className="flex items-start gap-4 lg:gap-7">
             <div
                 className="w-[20%] min-w-[100px]"
@@ -47,7 +47,7 @@ const WideCard = ({course}:props) => {
             </div>
 
             <div>
-            <CardBadge title={course.category.name} href={'/Categories/'+course.id} />
+            <CardBadge title={course.category.name} href={'/categories/'+course.id} />
 
             <h3 className="mt-4 text-lg font-medium sm:text-xl">
                 {course.name}

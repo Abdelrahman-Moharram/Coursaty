@@ -1,13 +1,14 @@
 from django.shortcuts import redirect
 from rest_framework import response, status
-from .models import Course, Section
-from .serializers import CourseListSerial, CourseDetailsSerial, SectionsSerial, BaseCourseListSerial
+from .models import Course, Section, Industry
+from .serializers import CourseListSerial, CourseDetailsSerial, SectionsSerial, BaseCourseListSerial, IndustriesSerial
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from .permissions import IsOwnCourse
 from .Payments import apply_stripe_payment
 from rest_framework.renderers import JSONRenderer
 from django.conf import settings
+from django.db.models import Q
 
 def to_int(val, default):
     if val:
@@ -109,4 +110,18 @@ def Stripe_payment(request, id):
         },
         status=status.HTTP_500_INTERNAL_SERVER_ERROR
     )
-    
+
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, IsOwnCourse))
+def GetCoursesFromDep(request, id):
+    courses = Course.objects.filter(
+        Q(category=id) | Q(subcategory=id) | Q(industry=id)
+    )
+    courseSectionsSerial = BaseCourseListSerial(data=courses, many=True)
+    if courseSectionsSerial.is_valid():
+        pass
+    return response.Response(data={
+        "courses":courseSectionsSerial.data
+    }, status=status.HTTP_200_OK)
+

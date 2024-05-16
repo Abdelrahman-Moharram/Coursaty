@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 
+.shadow-default-sm{
+    box-shadow: 0 1px 5px#9b9292 !important;
+}
+
 .shadow-default-md{
     box-shadow: 0 0 5px 1px #9b9292 !important;
 }
