@@ -4,6 +4,7 @@ import InfoSkeleton from '@/Components/Common/InfoSkeleton'
 import { GrMoney } from "react-icons/gr";
 import React from 'react'
 import StripePayment from './StripePayment';
+import { useAppSelector } from '@/redux/hooks';
 
 interface IndustryType{
     id: string;
@@ -53,6 +54,7 @@ const CourseInfo = ({course, isOwnCourse}:props) => {
                 {href:"/subcategories/"+course.subcategory.id, title:course.subcategory.name},
             ]
     }   
+	const { isAuthenticated } = useAppSelector(state => state.auth);
     return (
         <div>
             
@@ -68,13 +70,16 @@ const CourseInfo = ({course, isOwnCourse}:props) => {
                             course?.price?
                             <div className='mb-7'>
                                 {
+                                isAuthenticated?
                                     !isOwnCourse?
                                         <>
                                             <p className='text-[17px]'> {course?.price} EGP</p>
                                             <StripePayment course_id={course.id} />
                                         </>
                                     :
+                                    
                                         <ButtonLink href={course.id+'/learn'}>Go To Course</ButtonLink>
+                                :null
                                 }
                             </div>
                             :null

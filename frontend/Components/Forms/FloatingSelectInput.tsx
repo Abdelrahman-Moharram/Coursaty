@@ -8,6 +8,7 @@ interface props {
 	label: string
 	required?: boolean;
     emptyoption?:boolean;
+    errors?: []
 }
 
 const FloatingSelectInput = ({
@@ -18,6 +19,7 @@ const FloatingSelectInput = ({
     label,
 	required = false,
     emptyoption = true,
+    errors
 }: props) => {
   return (
     <>
@@ -47,6 +49,11 @@ const FloatingSelectInput = ({
             {label}
         </span>
     </label>
+    {
+        errors?.map(error=>
+            <span className='text-red-500 block'>{error}</span>
+        )
+    }
     </>
   )
 }

@@ -21,7 +21,7 @@ export async function generateMetadata(
 export default function Page({ params }: Props) {
   
   return(
-    <div className='lg:w-[80%] w-full mx-auto bg-white rounded-lg my-3 overflow-hiddenw-[80%] p-5'>
+    <div className='xl:w-[80%] w-full mx-auto bg-white rounded-lg my-3 overflow-hiddenw-[80%] p-5'>
       <DetailsPage id={params.id} />
     </div>
   )

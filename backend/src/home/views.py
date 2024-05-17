@@ -1,10 +1,17 @@
 from rest_framework import response, status
 from .models import Banner, BannerImage
 from courses.models import Industry, Course, Category, SubCategory
-from courses.serializers import IndustriesSerial, IncludedCategoryBaseSerial, IncludedSubCategoryBaseSerial, IncludedIndustrySerial, CourseListSerial, IndustrySerial
 from .serializers import BannerImageSerial
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, permission_classes
+from courses.serializers import (
+    IndustriesSerial,
+    IncludedCategoryBaseSerial,
+    IncludedSubCategoryBaseSerial,
+    IncludedIndustrySerial,
+    CourseListSerial,
+    IndustrySerial
+)
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))

@@ -31,7 +31,7 @@ interface Props{
     courseForm:courseFormType,
     formSubmit:(e:FormEvent<HTMLFormElement>) =>void
     isLoading:boolean
-
+    errors?:any | null
 }
 
 const CourseForm = (
@@ -43,11 +43,10 @@ const CourseForm = (
     imageChange,
     courseForm,
     formSubmit,
-    isLoading
+    isLoading,
+    errors
     }:Props
-) => {
-    
-    
+) => {    
   return (
     <div className='lg:w-[50%] w-full'>
       <form
@@ -63,6 +62,7 @@ const CourseForm = (
                 value={courseForm.name}
                 label={'Course Name'}
                 required= {true}
+                errors={errors?.name}
             />
         </div>
 
@@ -76,6 +76,7 @@ const CourseForm = (
                 required={true}
                 onChange={selectChange}
                 emptyoption={true}
+                errors={errors?.industry}
             >
                 {
                     industries?.length?
@@ -96,6 +97,8 @@ const CourseForm = (
                 required={true}
                 onChange={selectChange}
                 emptyoption={true}
+                errors={errors?.category}
+
             >
                 {
                     categories?.length?
@@ -117,6 +120,7 @@ const CourseForm = (
                 required={true}
                 onChange={selectChange}
                 emptyoption={true}
+                errors={errors?.subcategory}
             >
                 {
                     subcategories?.length?
@@ -135,6 +139,7 @@ const CourseForm = (
                 onChange={onChange}
                 value={courseForm.description}
                 label={'Course Description'}
+                errors={errors?.subcategory}
             >
             </FloatingTextarea>
         </div>
@@ -150,7 +155,8 @@ const CourseForm = (
                 onChange={onChange}
                 value={courseForm.price}
                 label={'Price'}
-                required= {true}
+                required= {false}
+                errors={errors?.subcategory}
             >
                 <div className="absolute right-4 top-2 text-primary">
                     EGP
@@ -164,7 +170,8 @@ const CourseForm = (
                 onChange={imageChange}
                 file={courseForm.image}
                 label={'Course Image'}
-                required= {true}
+                required= {false}
+                errors={errors?.subcategory}
             />
         </div>
         <div className="flex justify-end">

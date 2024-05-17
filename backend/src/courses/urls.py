@@ -4,7 +4,7 @@ from .views import (
     CourseDetails,
     Coursename,
     CourseLearn,
-    Stripe_payment,
+    purchase_course,
     UserCoursesList,
     GetCoursesFromDep,
     create_course
@@ -18,6 +18,6 @@ urlpatterns = [
     path('<str:id>/', CourseDetails, name="CourseDetails"),
     path('<str:id>/learn', CourseLearn, name="CourseDetails"),
     path('<str:id>/name', Coursename, name="CourseName"),
-    path('<str:id>/buy/stripe', Stripe_payment, name="CourseBuy"),
+    path('<str:id>/buy/stripe', purchase_course, name="CourseBuy"),
     path("cat/<str:id>", GetCoursesFromDep, name="GetCoursesFromDep"),
 ]

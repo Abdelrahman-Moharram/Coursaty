@@ -24,4 +24,3 @@ class BannerImage(models.Model):
 
     def __str__(self):
         return self.title or str(self.id)
-

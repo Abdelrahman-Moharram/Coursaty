@@ -8,6 +8,7 @@ interface props {
 	label: string
 	required?: boolean;
     children?: React.ReactNode | undefined
+    errors?:any[]
 }
 
 const FloatingInput = ({
@@ -17,13 +18,14 @@ const FloatingInput = ({
 	value,
 	label,
 	required = false,
-    children
+    children,
+    errors
 }: props) => {
   return (
     <>
         <label
             htmlFor={labelId}
-            className="relative block rounded-md border border-primary/80 shadow-sm"
+            className={"relative block rounded-md borde shadow-sm "+ (errors?.length?"border-red-500":"border-primary/80")}
         >
             <input
                 type={type}
@@ -42,6 +44,11 @@ const FloatingInput = ({
                 </span>
                 {children}
         </label>
+        {
+            errors?.map(error=>
+                <span className='text-red-500 block'>{error}</span>
+            )
+        }
     </>
   )
 }

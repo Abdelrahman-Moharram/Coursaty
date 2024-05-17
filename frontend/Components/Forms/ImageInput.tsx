@@ -8,6 +8,7 @@ interface props {
 	file: Blob | undefined;
 	label: string
 	required?: boolean;
+    errors?: []
 }
 
 const ImageInput = ({labelId,
@@ -15,7 +16,8 @@ const ImageInput = ({labelId,
 	onChange,
 	file,
 	label,
-	required = false
+	required = false,
+    errors
 }: props) => {
     let objectUrl = undefined
     if(file)
@@ -63,7 +65,11 @@ const ImageInput = ({labelId,
             className="hidden"
             placeholder={label}
         />
-        
+        {
+            errors?.map(error=>
+                <span className='text-red-500 block'>{error}</span>
+            )
+        }
     </div>
   )
 }

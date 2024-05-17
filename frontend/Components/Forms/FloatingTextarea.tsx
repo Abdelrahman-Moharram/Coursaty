@@ -6,13 +6,15 @@ interface props {
 	value: string;
 	label: string
 	required?: boolean;
+    errors?: []
 }
 
 const FloatingTextarea = ({labelId,
 	onChange,
 	value,
 	label,
-	required = false
+	required = false,
+    errors
 }: props) => {
   return (
     <>
@@ -37,6 +39,11 @@ const FloatingTextarea = ({labelId,
             {label}
         </span>
     </label>
+    {
+        errors?.map(error=>
+            <span className='text-red-500 block'>{error}</span>
+        )
+    }
     </>
   )
 }

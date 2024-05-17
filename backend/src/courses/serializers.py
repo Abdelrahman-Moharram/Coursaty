@@ -114,7 +114,9 @@ class CourseDetailsSerial(serializers.ModelSerializer):
             'created_at',
             'price',
             'instructor',
-            'section_set'
+            'section_set',
+            'no_of_ratings',
+            'avg_rating',            
         ]
 
 class SectionsSerial(serializers.ModelSerializer):

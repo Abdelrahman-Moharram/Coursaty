@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from rest_framework import response, status
-from .models import Course, Section, Industry
+from .models import Course, Section, Industry, user_courses
 from .serializers import CourseListSerial, CourseDetailsSerial, SectionsSerial, BaseCourseListSerial, IndustriesSerial
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
@@ -9,6 +9,8 @@ from .Payments import apply_stripe_payment
 from rest_framework.renderers import JSONRenderer
 from django.conf import settings
 from django.db.models import Q
+from .forms import course_form
+
 
 def to_int(val, default):
     if val:
@@ -44,11 +46,16 @@ def index(request):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def create_course(request):
-    print("request.body")
-    print(request.body)
-    print("request.FILES")
-    print(request.POST)
-    return response.Response({'message':"done"}, status=status.HTTP_201_CREATED)
+    form = course_form(request.POST, request.FILES,)
+    if form.is_valid():
+        form = form.save(commit=False)
+        form.instructor = request.user
+        form.save()
+        return response.Response({'message':"your course added successfully", 'id':form.id}, status=status.HTTP_201_CREATED)
+    
+    return response.Response({
+        'errors': form.errors.as_data()
+    }, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -58,8 +65,9 @@ def CourseDetails(request, id):
     
     if courseSerial.is_valid():
         pass
-    if request.user:
-        isOwnCourse = len(request.user.courses.filter(id=id)) > 0
+    isOwnCourse = 0
+    if request.user.is_authenticated:
+        isOwnCourse = len(user_courses.objects.filter(course_id=id, user=request.user)) > 0
     
     return response.Response(data={
         "course":courseSerial.data[0],
@@ -91,7 +99,8 @@ def CourseLearn(request, id):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def UserCoursesList(request):
-    coursesSerial = BaseCourseListSerial(data=request.user.courses.all(), many=True)
+    courses = user_courses.objects.values('course').filter(user=request.user).all()
+    coursesSerial = BaseCourseListSerial(data=Course.objects.filter(id__in=courses), many=True)
     if coursesSerial.is_valid():
         pass
     return response.Response(data={
@@ -102,24 +111,31 @@ def UserCoursesList(request):
 @renderer_classes((JSONRenderer))
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
-def Stripe_payment(request, id):
-    if len(request.user.courses.filter(id=id)) > 0:
+def purchase_course(request, id):
+    if len(user_courses.objects.filter(user=request.user, course_id=id)) > 0:
         response.Response({'message': 'you already have this course'}, status=status.HTTP_400_BAD_REQUEST)
         return redirect(settings.DOMAIN + 'courses/'+id)
     course = Course.objects.filter(id=id).first()
     if not course:
         response.Response({'message': 'Course Not Found'}, status=status.HTTP_404_NOT_FOUND)
         return redirect(settings.DOMAIN + 'courses/'+id)
-    checkout_session, success = apply_stripe_payment(id, price=course.price, name=course.name)
-    if success:
-        request.user.courses.add(course)
+    
+    if course.price:
+        checkout_session, success = apply_stripe_payment(id, price=course.price, name=course.name)
+        if not success:
+            return response.Response(
+                {
+                    'message': 'something went wrong',
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        user_courses.objects.create(course=course, user=request.user, )
         return redirect(checkout_session.url)
-    return response.Response(
-        {
-            'message': 'something went wrong',
-        },
-        status=status.HTTP_500_INTERNAL_SERVER_ERROR
-    )
+    user_courses.objects.create(course=course, user=request.user, )
+    return redirect(settings.DOMAIN + 'courses/{}/learn'.format(id),)
+    
+    
+    
 
 
 @api_view(['GET'])

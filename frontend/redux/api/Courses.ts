@@ -1,7 +1,7 @@
 import { apiSlice } from "../services/apiSlice";
 
 
-const homeApiSlice = apiSlice.injectEndpoints({
+const CourseApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder)=>({
             getAllCoursesPage:builder.query({
                 query:({page, size}:{page:number, size:number})=>({
@@ -33,16 +33,12 @@ const homeApiSlice = apiSlice.injectEndpoints({
             }),
 
             createCourse: builder.mutation({
-                query:({form})=>{
+                query:(form)=>{
                     
                     return {
-                        url: 'courses/create/',
+                        url: `courses/`,
                         method: 'POST',
                         body: form,
-                        formData:true,
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
                     }
                 }
             })
@@ -57,4 +53,4 @@ export const {
     useGetCourseContentQuery,
     useGetUserCoursesQuery,
     useCreateCourseMutation
-} = homeApiSlice
+} = CourseApiSlice

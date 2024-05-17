@@ -3,6 +3,8 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import CourseForm from './_components/CourseForm'
 import { useGetIndustriesQuery, useGetCategoriesMutation, useGetSubCategoriesMutation } from '@/redux/api/homeApi'
 import { useCreateCourseMutation } from '@/redux/api/Courses'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation';
 
 interface courseFormType{
   name: string
@@ -15,6 +17,7 @@ interface courseFormType{
 }
 
 const page = () => {
+  const router = useRouter()
   const [courseForm, setCourseForm] = useState<courseFormType>({
     name:'',
     description: '',
@@ -24,6 +27,7 @@ const page = () => {
     image: undefined,
     price:0
 })
+const [formErrors, setFormErrors] = useState(null)
 const onChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> ) => {
 const { name, value } = event.target;
     
@@ -41,29 +45,39 @@ setCourseForm({ ...courseForm, [name]: files?.length? files[0] : '' });
   const {data: industries} = useGetIndustriesQuery(undefined)
   const [getCategory, {data: categories}] = useGetCategoriesMutation()
   const [getSubCategory, {data: subcategories}] = useGetSubCategoriesMutation()
-  const [createCourse, {isLoading}] = useCreateCourseMutation()
+  const [createCourse, {data, isLoading}] = useCreateCourseMutation()
   useEffect(()=>{   
     if(courseForm.industry)
       getCategory({id:courseForm.industry})
   },[courseForm.industry])
 
-  useEffect(()=>{
-    
+  useEffect(()=>{    
     if(courseForm.category)
       getSubCategory({id:courseForm.category})
   },[courseForm.category])
+
   const formSubmit = (event: FormEvent<HTMLFormElement>) =>{
     event.preventDefault()
-    const form = new FormData(event.currentTarget)
-    form.append('name', courseForm.name)
-    form.append('description', courseForm.description)
-    form.append('category', courseForm.category)
-    form.append('industry', courseForm.industry)
-    form.append('subcategory', courseForm.subcategory)
-    form.append('image', courseForm.image ?? "")
-    form.append('price', courseForm.price.toString())
+    const formData = new FormData()
+    formData.append('name', courseForm.name)
+    formData.append('description', courseForm.description)
+    formData.append('category', courseForm.category)
+    formData.append('industry', courseForm.industry)
+    formData.append('subcategory', courseForm.subcategory)
+    formData.append('image', courseForm.image ?? "")
+    formData.append('price', courseForm.price.toString())
      
-    createCourse({form: Object.fromEntries(form)})
+    createCourse(formData)
+    .unwrap()
+    .then(data=>{
+      toast.success(data?.message)
+      router.push("/courses/"+data?.id+"/manage")
+    })
+    .catch((err:any)=>{
+      console.log(err);
+      
+      setFormErrors(err.data.errors)
+    })
   }
   return (
     <div className='w-full mx-auto bg-white rounded-lg my-3 overflow-hidden p-5'>
@@ -78,6 +92,7 @@ setCourseForm({ ...courseForm, [name]: files?.length? files[0] : '' });
         courseForm={courseForm}
         formSubmit={formSubmit}
         isLoading={isLoading}
+        errors={formErrors}
       />
     </div>
   )

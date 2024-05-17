@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 import uuid
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 def imagesave(instance,filename):
     extension = filename.split(".")[-1]
@@ -67,6 +68,26 @@ class Course(models.Model):
     is_deleted          = models.BooleanField(default=False)
     created_at          = models.DateTimeField(auto_now=True, auto_now_add=False)
     price               = models.DecimalField(max_digits=8, decimal_places=2)
+
+    def no_of_ratings(self):
+        ratings = user_courses.objects.filter(course=self)
+        count = 0
+        for x in ratings:
+            if x.rating:
+                count += 1
+        return count
+    def avg_rating(self):
+        # sum of ratings stars  / len of rating hopw many ratings 
+        sum = 0
+        ratings = user_courses.objects.filter(course=self) # no of ratings happened to the meal 
+        for x in ratings:
+            if x.rating:
+                sum += x.rating
+
+        if len(ratings) > 0:
+            return sum / len(ratings)
+        else:
+            return 0
     def __str__(self) -> str:
         return self.name
 
@@ -88,3 +109,18 @@ class Content(models.Model):
     file                = models.FileField(upload_to='courses/files', max_length=100, null=True, blank=True)
     def __str__(self) -> str:
         return self.name
+
+class user_courses(models.Model):
+    id                  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    course              = models.ForeignKey(Course, on_delete=models.PROTECT)
+    user                = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    added_at            = models.DateTimeField(auto_now=False, auto_now_add=True)
+    rating              = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=True, blank=True)
+
+
+    def __str__(self):
+        return self.user.first_name + " - has - " + self.course.name 
+    
+    class Meta:
+        unique_together = (('user', 'course'),)
+        index_together = (('user', 'course'),)
