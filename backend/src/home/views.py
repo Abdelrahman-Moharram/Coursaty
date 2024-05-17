@@ -1,7 +1,7 @@
 from rest_framework import response, status
 from .models import Banner, BannerImage
-from courses.models import Industry, Course
-from courses.serializers import IndustriesSerial, CourseListSerial, IndustrySerial
+from courses.models import Industry, Course, Category, SubCategory
+from courses.serializers import IndustriesSerial, IncludedCategoryBaseSerial, IncludedSubCategoryBaseSerial, IncludedIndustrySerial, CourseListSerial, IndustrySerial
 from .serializers import BannerImageSerial
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, permission_classes
@@ -52,6 +52,47 @@ def GetAllIndustries(request):
     return response.Response(data={
        'industries': industrySerial.data,
     }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def GetAllIndustriesAsSelectList(request):
+    industrySerial  = IncludedIndustrySerial(
+        data=Industry.objects.values('id', 'name'), 
+        many=True
+    )
+
+    if not industrySerial.is_valid():
+        pass
+    return response.Response(data={
+       'industries': industrySerial.data,
+    }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def GetCategoriesFromIndustryAsSelectList(request, industry_id):
+    categorySerial = IncludedCategoryBaseSerial(data=
+        Category.objects.filter(industry_id=industry_id).values('id', 'name'), 
+        many=True
+    )
+    if categorySerial.is_valid():
+        pass
+    return response.Response(data={
+       'categories': categorySerial.data,
+    }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def GetSubCategoriesFromCategoryAsSelectList(request, category_id):
+    subCategorySerial  = IncludedSubCategoryBaseSerial(
+        data=SubCategory.objects.filter(category_id=category_id).values('id', 'name'), 
+        many=True
+    )
+    if not subCategorySerial.is_valid():
+        pass
+    return response.Response(data={
+       'subcategories': subCategorySerial.data,
+    }, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))

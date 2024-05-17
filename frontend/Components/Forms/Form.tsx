@@ -36,7 +36,7 @@ export default function Form({
 					key={input.labelId}
 					labelId={input.labelId}
 					type={input.type}
-					onChange={onChange}
+					onChange={(e:ChangeEvent<HTMLInputElement>)=>onChange(e)}
 					value={input.value}
 					link={input.link}
 					required={input.required}
@@ -48,7 +48,7 @@ export default function Form({
 			<div>
 				<button
 					type='submit'
-					className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+					className='flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 					disabled={isLoading}
 				>
 					{isLoading ? <Spinner sm /> : `${btnText}`}

@@ -25,10 +25,21 @@ class IncludedSubCategoryBaseSerial(serializers.ModelSerializer):
         model= SubCategory
         fields=['id', 'name']
 
+class IncludedCategoryBaseSerial(serializers.ModelSerializer):
+    class Meta:
+        model= Category
+        fields=['id', 'name', ]
+
 class IncludedCategoryWithImageSerial(serializers.ModelSerializer):
     class Meta:
         model= Category
         fields=['id', 'name', 'description', 'image']
+
+
+class IncludedSubCategoryBaseSerial(serializers.ModelSerializer):
+    class Meta:
+        model= SubCategory
+        fields=['id', 'name']
 
 class IncludedSubCategorySerial(serializers.ModelSerializer):
     category = IncludedCategorySerial(many=False)

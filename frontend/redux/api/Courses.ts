@@ -32,6 +32,20 @@ const homeApiSlice = apiSlice.injectEndpoints({
                 })
             }),
 
+            createCourse: builder.mutation({
+                query:({form})=>{
+                    
+                    return {
+                        url: 'courses/create/',
+                        method: 'POST',
+                        body: form,
+                        formData:true,
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                }
+            })
             
     }) 
 })
@@ -41,5 +55,6 @@ export const {
     useGetAllCoursesPageQuery,
     useGetCourseDetailsPageQuery,
     useGetCourseContentQuery,
-    useGetUserCoursesQuery
+    useGetUserCoursesQuery,
+    useCreateCourseMutation
 } = homeApiSlice

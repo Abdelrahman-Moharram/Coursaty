@@ -22,7 +22,7 @@ const SmallCardsList = ({items, preLink, SkeletonNum, skeletonHeight, skeletonWi
         setWaitingDelay(false)
       },3000)
     },[])
-    const handleImageSkeleton = ({SkeletonNum, height='124px', width='160px'}:{SkeletonNum:number, height?:string, width?:string})=>{
+    const handleImageSkeleton = ({SkeletonNum, height='124px', width='150px'}:{SkeletonNum:number, height?:string, width?:string})=>{
         let total = [];
         for(let i=0; i < SkeletonNum; i ++)
             total.push(<ImageSkeleton key={i} height={height} width={width} rounded='10px' />)
@@ -33,7 +33,8 @@ const SmallCardsList = ({items, preLink, SkeletonNum, skeletonHeight, skeletonWi
   return (
     <div className={items?.length?"grid grid-cols-2 gap-4 sm:grid-cols-3":""}>
       {
-        !waitingDelay || items?.length?
+        waitingDelay? 
+          items?.length?
           items.map((cat:itemType)=>(
                 <SmallCard preLink={preLink} item={cat} key={cat.id} />
             ))
@@ -42,6 +43,7 @@ const SmallCardsList = ({items, preLink, SkeletonNum, skeletonHeight, skeletonWi
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {handleImageSkeleton({SkeletonNum:SkeletonNum, width:skeletonWidth, height:skeletonHeight})}
         </div>
+        :null
       }
     </div>
   )

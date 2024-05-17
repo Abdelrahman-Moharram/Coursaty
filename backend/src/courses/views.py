@@ -40,6 +40,16 @@ def index(request):
     }, status=status.HTTP_200_OK)
 
 
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def create_course(request):
+    print("request.body")
+    print(request.body)
+    print("request.FILES")
+    print(request.POST)
+    return response.Response({'message':"done"}, status=status.HTTP_201_CREATED)
+
 @api_view(['GET'])
 @permission_classes((AllowAny,))
 def CourseDetails(request, id):

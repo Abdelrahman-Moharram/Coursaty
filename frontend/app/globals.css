@@ -47,3 +47,20 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+@keyframes fadein {
+    from {width: 60px; height: 60px;}
+    to {width: 300px; height: auto;}
+}
+
+.inputImage {
+    width: 60px;
+    height: 60px;
+}
+
+.fade-in {
+  animation: fadein 0.35s ease forwards;
+}
+.preview-image:hover div{
+    display: flex !important;
+}

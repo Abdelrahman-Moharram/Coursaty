@@ -1,14 +1,23 @@
 import React from 'react'
+import Spinner from './Spinner';
 
 interface props{
     title: string
+    submit?: boolean;
+    isLoading: boolean
 }
-const Button = ({title}:props) => {
+const Button = ({title, submit, isLoading}:props) => {
   return (
     <button
-        className="inline-block rounded border border-primary hover:bg-primary-hover px-12 py-3 text-sm font-medium text-white focus:outline-none focus:ring active:text-indigo-500"
+        type={submit? "submit" : "button" }
+        className="inline-block rounded border border-primary hover:bg-primary hover:text-white text-primary px-8 py-3 text-sm font-medium transition-all"
     >
-    {title}
+      {isLoading ?  
+        <div className='flex items-center gap-1'>
+          {title}
+          <Spinner sm /> 
+        </div>
+      : `${title}`}
     </button>
   )
 }

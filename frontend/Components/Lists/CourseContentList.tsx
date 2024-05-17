@@ -26,7 +26,7 @@ const CourseContentList = ({sections, section_id}:props) => {
         setTimeout(()=>{
             setLoading(!loading)
         }, 1000)
-    },[loading])
+    },[])
   return (
     <div className="space-y-4">
         {
