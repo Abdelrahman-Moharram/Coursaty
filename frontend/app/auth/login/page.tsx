@@ -17,7 +17,9 @@ export default function Page() {
           src="/coursatty_high_resolution_logo_black_transparent.png"
           alt="Coursatty"
           width={400}
+          style={{width:"auto"}}
           height={400}
+          priority
         />
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Sign in to your account

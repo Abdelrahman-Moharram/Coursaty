@@ -64,10 +64,12 @@ export default function Navbar() {
                     <Link className="block text-teal-600" href="/">
                         <span className="sr-only">Home</span>
                         <Image
-                            width={180}
+                            width={'180'}
                             height={50}
                             src='/coursatty_high_resolution_logo_black_transparent.png' 
                             alt="Logo" 
+                            priority
+                            style={{width:"auto"}}
                         />
                     </Link>
                 </div>

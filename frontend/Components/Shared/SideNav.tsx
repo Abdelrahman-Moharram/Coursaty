@@ -1,12 +1,15 @@
+'use client'
 import Link from "next/link";
 import { FaTrash } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { MdManageAccounts } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import { RiMovieLine } from "react-icons/ri";
+import { useParams } from "next/navigation";
 
 export default function SideNav({className}:{className:string}) {
 
+    const {id} = useParams()
     
     return (
         <div className={className}>
@@ -16,7 +19,7 @@ export default function SideNav({className}:{className:string}) {
 
                         <li>
                             <Link
-                                href="/products?page=1&size=24"
+                                href={`/courses/${id}/manage`}
                                 className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                             >
                                 <FaHome />
@@ -26,7 +29,7 @@ export default function SideNav({className}:{className:string}) {
 
                         <li>
                             <Link
-                                href="/products?page=1&size=24"
+                                href={`/courses/${id}/manage/sections&content`}
                                 className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                             >
                                 <RiMovieLine className="text-sm" />
@@ -61,18 +64,18 @@ export default function SideNav({className}:{className:string}) {
 
                             <ul className="mt-2 space-y-1 px-4">
                                 <li>
-                                <a
-                                    href="#"
+                                <Link
+                                    href={`/courses/${id}/manage/settings`}
                                     className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                                 >
                                     <IoSettingsSharp />
                                     Settings
-                                </a>
+                                </Link>
                                 </li>
 
                                 <li>
                                 <a
-                                    href="#"
+                                    href={`/courses/${id}/manage/delete`}
                                     className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-100"
                                 >
                                     <FaTrash />

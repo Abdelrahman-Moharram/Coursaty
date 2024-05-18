@@ -8,18 +8,16 @@ interface props{
 const CourseBanner = ({image}:props) => {
     
     return (
-        <div className='w-[440px] h-auto rounded-lg overflow-hidden'>
+        <div className='w-[100%] h-auto overflow-hidden'>
             {
             image?
-                <Image
-                    unoptimized
-                    width={1000}
-                    height={800}
+                <img
+                    className='w-[90%] mx-auto rounded-lg'
                     alt='banner image'
                     src={process.env.NEXT_PUBLIC_HOST+image}
                 />
             :
-                <ImageSkeleton width={'400px'} height={'225px'} />
+                <ImageSkeleton width={'90%'} height={'300px'} rounded='10px' />
             }
         </div>
       )

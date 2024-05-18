@@ -1,10 +1,10 @@
 import Breadcrumb from '@/Components/Common/Breadcrumb';
 import ButtonLink from '@/Components/Common/ButtonLink';
 import InfoSkeleton from '@/Components/Common/InfoSkeleton'
-import { GrMoney } from "react-icons/gr";
 import React from 'react'
 import StripePayment from './StripePayment';
 import { useAppSelector } from '@/redux/hooks';
+import BasicRating from '@/Components/Common/BasicRate';
 
 interface IndustryType{
     id: string;
@@ -35,6 +35,8 @@ interface subcategoryType{
       created_at: Date,
       instructor: userType;
       subcategory: subcategoryType;
+      no_of_ratings: number
+      avg_rating: number
   }
 interface props{
     course:courseType;
@@ -62,8 +64,12 @@ const CourseInfo = ({course, isOwnCourse}:props) => {
                 course?.name?
                     <div>
                         <h2 className='text-[20px] text-primary font-bold'>{course?.name}</h2>
-                        <div className="flex text-gray-600 hover:text-gray-500 text-[13px] mb-3">
+                        <div className="flex mt-2 text-gray-600 hover:text-gray-500 text-[13px] mb-3">
                             <Breadcrumb items={BreadcrumbList()} />
+                        </div>
+                        <div className="my-4 flex">
+                            <BasicRating rate={course?.avg_rating} />
+                            ({course?.no_of_ratings === 0 ? 'be the first to rate this course':course?.no_of_ratings})
                         </div>
                         
                         {

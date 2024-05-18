@@ -9,10 +9,18 @@ const InstructorsApiSlice = apiSlice.injectEndpoints({
                     method:'GET',
                 })
             }),
+
+            getCourseSectionsAndContentPage:builder.query({
+                query:({id}:{id:string})=>({
+                    url:`instructor/courses/${id}/manage/sections/`,
+                    method:'GET',
+                })
+            }),
         }) 
 })
     
     
 export const {
-    useGetCourseStaticsPageQuery
+    useGetCourseStaticsPageQuery,
+    useGetCourseSectionsAndContentPageQuery
 } = InstructorsApiSlice

@@ -83,7 +83,7 @@ class BaseCourseListSerial(serializers.ModelSerializer):
 
 class CourseListSerial(serializers.ModelSerializer):
     instructor      = IncludedUserSerial()
-    category        = IncludedCategorySerial()
+    subcategory     = IncludedSubCategorySerial()
 
     class Meta:
         model = Course
@@ -91,11 +91,13 @@ class CourseListSerial(serializers.ModelSerializer):
             'id',
             'name',
             'description',
-            'category',
             'image',
             'created_at',
             'price',
-            'instructor'
+            'instructor',
+            'subcategory',
+            'no_of_ratings',
+            'avg_rating', 
         ]
 
 class CourseDetailsSerial(serializers.ModelSerializer):

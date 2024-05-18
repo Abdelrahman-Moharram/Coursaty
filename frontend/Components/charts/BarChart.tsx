@@ -21,7 +21,6 @@ ChartJS.register(
   );
 
 export const BarChart = ({data}:any) => {
-    console.log("Bar Chart worked");
     const options:any = {
         plugins: {
           title: {

@@ -73,9 +73,7 @@ setCourseForm({ ...courseForm, [name]: files?.length? files[0] : '' });
       toast.success(data?.message)
       router.push("/courses/"+data?.id+"/manage")
     })
-    .catch((err:any)=>{
-      console.log(err);
-      
+    .catch((err:any)=>{     
       setFormErrors(err.data.errors)
     })
   }

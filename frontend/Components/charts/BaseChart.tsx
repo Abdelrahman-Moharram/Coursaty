@@ -25,7 +25,7 @@ const BaseChart = ({x, y, x_label}:Props) =>{
               x && y?
                <LineChart data={cahrtdata} legend="Course stats per years" />
               :
-                <ImageSkeleton width="400px" height="300px" rounded="10px" />
+                <ImageSkeleton width="100%" height="370px" rounded="10px" />
             }
         </div>
     )
