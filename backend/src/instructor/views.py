@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from courses.models import Course, user_courses, Section
+from courses.models import Course, user_courses, Section, Content
 from rest_framework import response, status
 from django.db.models.functions import ExtractYear
 from django.db import models
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework.renderers import JSONRenderer
-from .permissions import IsCourseInstructorOrAdmin
+from .permissions import IsCourseInstructorOrAdmin, IsContentOwnerOrAdmin
 from courses.serializers import CourseListSerial, SectionsSerial
 
 def clean_purchasing_history(purchasing_histroy, price):
@@ -76,3 +76,18 @@ def Course_Sections(request, course_id):
         status=status.HTTP_200_OK
     )
 
+@renderer_classes((JSONRenderer))
+@api_view(['DELETE'])
+@permission_classes((IsContentOwnerOrAdmin,))
+def delete_content(request, content_id):
+    try:
+        Content.objects.filter(id=content_id).delete()
+        return response.Response(data={
+            'message': 'item deleted successfully!'
+        }, status=status.HTTP_204_NO_CONTENT)
+    except:
+        return response.Response(
+            data={'message': 'something went wrong contact the admin'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+        

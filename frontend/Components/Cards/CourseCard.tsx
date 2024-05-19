@@ -5,6 +5,11 @@ import { FaCartPlus } from "react-icons/fa";
 import CardBadge from './CardBadge';
 import Image from 'next/image';
 
+interface subcategory{
+    id: string;
+    name: string;
+    category:categoryType
+}
 interface categoryType{
     id: string;
     name: string;
@@ -23,7 +28,7 @@ interface categoryType{
       description: string,
       created_at: Date,
       instructor: userType;
-      category: categoryType;
+      subcategory: subcategory;
   }
 interface props{
     course:courseType
@@ -37,12 +42,10 @@ const CourseCard = ({course}:props) => {
         >
             <span className="sr-only">Wishlist</span>
             {
-                <FaRegHeart />
-                
+                <FaRegHeart />                
                 // <FaHeart />
             }
         </button>
-
             <Image
                 width={500}
                 height={300}
@@ -53,7 +56,7 @@ const CourseCard = ({course}:props) => {
             />
 
         <div className="relative border border-gray-100 bg-white p-6">
-            <CardBadge title={course.category.name} href={'/categories/'+course.category.id} />
+            <CardBadge title={course.subcategory?.category?.name} href={'/categories/'+course.subcategory.category?.id} />
 
             <h3 className="mt-4 text-sm font-medium text-gray-900 truncate">{course.name}</h3>
 

@@ -16,11 +16,19 @@ const InstructorsApiSlice = apiSlice.injectEndpoints({
                     method:'GET',
                 })
             }),
+
+            deleteCourseContent:builder.mutation({
+                query:({content_id}:{content_id:string})=>({
+                    url:`instructor/contents/${content_id}/delete/`,
+                    method:'DELETE',
+                })
+            }),
         }) 
 })
     
     
 export const {
     useGetCourseStaticsPageQuery,
-    useGetCourseSectionsAndContentPageQuery
+    useGetCourseSectionsAndContentPageQuery,
+    useDeleteCourseContentMutation
 } = InstructorsApiSlice

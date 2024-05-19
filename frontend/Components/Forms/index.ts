@@ -7,4 +7,4 @@ export { default as FloatingTextarea } from './FloatingTextarea';
 export { default as ImageInput } from './ImageInput';
 // export { default as PasswordResetConfirmForm } from './PasswordResetConfirmForm';
 // export { default as PasswordResetForm } from './PasswordResetForm';
-// export { default as RegisterForm } from './RegisterForm';
+export { default as RegisterForm } from './RegisterForm';

@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
-from courses.models import Course
+from courses.models import Course, Content
 
 
 class IsCourseInstructor(BasePermission):
@@ -23,3 +23,16 @@ class IsCourseInstructorOrAdmin(BasePermission):
         except:
             pass
         return False
+
+class IsContentOwnerOrAdmin(BasePermission):
+    message = "course management not allowed except for course owner or admin"
+    def has_permission(self, request, view):
+        try:
+            if request.user.is_superuser:
+                return True
+            content = Content.objects.filter(id=view.kwargs['content_id']).first()
+            if content.section.course.instructor == request.user:
+                return True
+        except:
+            pass
+        return False 
