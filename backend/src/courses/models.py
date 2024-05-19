@@ -116,8 +116,6 @@ class user_courses(models.Model):
     user                = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     added_at            = models.DateTimeField(auto_now=False, auto_now_add=True)
     rating              = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=True, blank=True)
-
-
     def __str__(self):
         return self.user.first_name + " - has - " + self.course.name 
     

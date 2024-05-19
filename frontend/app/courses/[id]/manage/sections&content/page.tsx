@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 
 const page = () => {
     const {id}:{id:string} = useParams()
-    const {data} = useGetCourseSectionsAndContentPageQuery({id})
+    const {data} = useGetCourseSectionsAndContentPageQuery({id}, {refetchOnMountOrArgChange:true, refetchOnReconnect:true})
     return (
         <div className='p-3'>
             <h1 className='text-xl font-bold my-5'> Sections & Content</h1>

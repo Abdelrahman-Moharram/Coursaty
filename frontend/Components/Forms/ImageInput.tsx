@@ -1,14 +1,16 @@
 import React, { ChangeEvent } from 'react'
+import { FaFile, FaVideo } from 'react-icons/fa';
 import { IoIosCloudUpload } from "react-icons/io";
 
 interface props {
 	labelId: string;
 	type: string;
 	onChange: (e:ChangeEvent<HTMLInputElement>) => void;
-	file: Blob | undefined;
+	file:  File | null;
 	label: string
 	required?: boolean;
-    errors?: []
+    errors?: string[];
+    
 }
 
 const ImageInput = ({labelId,
@@ -17,29 +19,51 @@ const ImageInput = ({labelId,
 	file,
 	label,
 	required = false,
-    errors
+    errors,
+
 }: props) => {
     let objectUrl = undefined
-    if(file)
+    if(file){
+        console.log(file);
+        
         objectUrl = URL.createObjectURL(file)
+    }
   return (
     <div>
         <label
             htmlFor={labelId}
             className="flex w-[300px] min-h-[200px] overflow-hidden relative justify-center gap-2 items-center hover:bg-primary hover:text-white bg-white border border-primary rounded-md text-primary cursor-pointer"
         >
-            
             <span
                 className="h-full"
             >
             {
-                file?
+                file? 
                     <div className='relative'>
-                        <img 
-                            src={objectUrl} 
-                            className='inputImage fade-in rounded-md'
-                            alt="uploaded course image" 
-                        />
+                        {
+                            file.type.includes("image")?
+                                <img 
+                                    src={objectUrl} 
+                                    className='inputImage fade-in rounded-md'
+                                    alt="uploaded course image" 
+                                />
+                            :
+                            file.type.includes('video')?
+                            <div className="text-center">
+                                <div className="flex justify-center">
+                                    <FaVideo />
+                                </div>
+                                {file?.name}
+                            </div>
+                            :
+                            
+                            <div className="text-center">
+                                <div className="flex justify-center">
+                                    <FaFile />
+                                </div>
+                                {file?.name}
+                            </div>
+                        }
                         <div 
                             className="preview-image absolute gap-4 transition-all font-extrabold text-secondry flex justify-center items-center top-0 bottom-0 left-0 right-0  hover:bg-white/50"
                         >
@@ -49,8 +73,9 @@ const ImageInput = ({labelId,
                             </div>
                         </div>
                     </div>
+                            
                 :<div className='flex items-center gap-3'>
-                    <IoIosCloudUpload /> course image
+                    <IoIosCloudUpload /> {label}
                 </div>
             }
             </span>

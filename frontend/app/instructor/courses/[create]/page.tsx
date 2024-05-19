@@ -40,7 +40,7 @@ setCourseForm({ ...courseForm, [name]: value });
 
 const imageChange = (e: ChangeEvent<HTMLInputElement> )=>{
     const { name, files } = e.target;        
-setCourseForm({ ...courseForm, [name]: files?.length? files[0] : '' });
+    setCourseForm({ ...courseForm, [name]: files?.length? files[0] : '' });
 }
   const {data: industries} = useGetIndustriesQuery(undefined)
   const [getCategory, {data: categories}] = useGetCategoriesMutation()

@@ -14,7 +14,7 @@ interface props{
     handleCourseDropdown:()=>void
 }
 const CoursesDropdown = ({handleCourseDropdown}:props) => {
-    const {data} = useGetUserCoursesQuery(undefined)
+    const {data} = useGetUserCoursesQuery(undefined, {refetchOnFocus:true})
     return (
         <div className='absolute right-10 top-[60px] max-w-[40rem] bg-gray-100 rounded-md shadow-lg px-5 py-4 z-10 my-3 max-h-[70%] overflow-y-auto'>
         {

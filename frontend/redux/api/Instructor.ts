@@ -23,6 +23,21 @@ const InstructorsApiSlice = apiSlice.injectEndpoints({
                     method:'DELETE',
                 })
             }),
+            addCourseContent:builder.mutation({
+                query:({course_id, section_id, name}:{course_id:string, section_id:string, name:string})=>({
+                    url:`instructor/courses/${course_id}/manage/sections/${section_id}/`,
+                    method:'POST',
+                    body: {name: name}
+                })
+            }),
+
+            editCourseContent:builder.mutation({
+                query:({content_id, form}:{content_id:string, form:FormData})=>({
+                    url:`instructor/contents/${content_id}/edit/`,
+                    method:'POST',
+                    body: form
+                })
+            }),
         }) 
 })
     
@@ -30,5 +45,7 @@ const InstructorsApiSlice = apiSlice.injectEndpoints({
 export const {
     useGetCourseStaticsPageQuery,
     useGetCourseSectionsAndContentPageQuery,
-    useDeleteCourseContentMutation
+    useDeleteCourseContentMutation,
+    useAddCourseContentMutation,
+    useEditCourseContentMutation
 } = InstructorsApiSlice
