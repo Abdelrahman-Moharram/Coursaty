@@ -6,8 +6,6 @@ import Link from 'next/link';
 interface content_setType{
     id:string;
     name:string
-    video?:string | undefined;
-    file?:string | undefined
 }
 
 interface section{
@@ -27,6 +25,7 @@ const CourseContentList = ({sections, section_id}:props) => {
             setLoading(!loading)
         }, 1000)
     },[])
+    
   return (
     <div className="space-y-4">
         {
@@ -77,7 +76,7 @@ const CourseContentList = ({sections, section_id}:props) => {
                     <div className="ml-4 mt-5">
                         {
                             section.content_set.map(content=>(
-                                content?.video && section_id?
+                                content?.name && section_id?
                                     <Link 
                                         href={`?section=${section_id}&lecture=${content.id}`} 
                                         className='flex items-center hover:underline' key={content.id}

@@ -102,6 +102,7 @@ const Content = ({content}:Props) => {
   const handleEditModal = ()=>{
     setEditModal(!openEditModal)
   }
+  
   return (
     <>
     <AddModal

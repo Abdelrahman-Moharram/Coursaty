@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from rest_framework import response, status
-from .models import Course, Section, Industry, user_courses
-from .serializers import CourseListSerial, CourseDetailsSerial, SectionsSerial, BaseCourseListSerial, IndustriesSerial
+from .models import Course, Section, Content, user_courses
+from .serializers import CourseListSerial, CourseDetailsSerial, DetailedIncludedContentSerial, SectionsSerial, BaseCourseListSerial, IndustriesSerial
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from .permissions import IsOwnCourse
@@ -86,13 +86,25 @@ def Coursename(request, id):
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, IsOwnCourse))
-def CourseLearn(request, id):
+def CourseSections(request, id):
     Sections = Section.objects.filter(course_id=id)
     courseSectionsSerial = SectionsSerial(data=Sections, many=True)
     if courseSectionsSerial.is_valid():
         pass
     return response.Response(data={
         "sections":courseSectionsSerial.data
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, IsOwnCourse))
+def SectionContent(request, id, content_id):
+    contents = Content.objects.filter(id=content_id)
+    section_content = DetailedIncludedContentSerial(data=contents, many=True)
+    if section_content.is_valid():
+        pass
+    return response.Response(data={
+        "content":section_content.data[0]
     }, status=status.HTTP_200_OK)
 
 

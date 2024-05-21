@@ -19,12 +19,22 @@ const CourseApiSlice = apiSlice.injectEndpoints({
             }),
 
             getCourseContent:builder.query({
-                query:(id:string)=>({
+                
+                query:({id}:{id:string})=>{
+                    return{
                     url:`/courses/${id}/learn`,
                     method:'GET',
-                })
+                }}
             }),
 
+            getSectionContent:builder.mutation({
+                
+                query:({id,content_id}:{id:string, content_id:string})=>{
+                    return{
+                    url:`/courses/${id}/learn/contents/${content_id}`,
+                    method:'GET',
+                }}
+            }),
             getUserCourses:builder.query({
                 query:()=>({
                     url:`courses/user`,
@@ -52,5 +62,6 @@ export const {
     useGetCourseDetailsPageQuery,
     useGetCourseContentQuery,
     useGetUserCoursesQuery,
-    useCreateCourseMutation
+    useCreateCourseMutation,
+    useGetSectionContentMutation
 } = CourseApiSlice

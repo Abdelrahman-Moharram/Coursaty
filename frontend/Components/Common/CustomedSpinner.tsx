@@ -9,7 +9,7 @@ const CustomedSpinner = () => {
         setTimeout(()=>{
             setLoading(!loading)
         }, 1000)
-    },[loading])
+    },[])
   return (
     <div className='flex justify-center items-center h-full'>
         {
