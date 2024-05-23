@@ -24,9 +24,6 @@ const homeApiSlice = apiSlice.injectEndpoints({
                     url:`subcategories-as-select/${id}`
                 })
             }),
-            
-
-
     }) 
 })
 

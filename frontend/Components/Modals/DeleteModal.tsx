@@ -17,7 +17,7 @@ const DeleteModal = ({open, handleClose, children, deleteAction, isLoading}:Prop
     <BaseModal open={open} handleClose={handleClose}  >
         <div className="flex justify-between items-center ">
             <h3 className='font-bold'>Delete Content</h3>
-            <div className="cursor-pointer p-3 rounded-full hover:bg-gray-100"><IoClose /></div>
+            <div onClick={handleClose} className="cursor-pointer p-3 rounded-full hover:bg-gray-100"><IoClose /></div>
         </div>
         <p className="text-red-500 my-4">
             {children}

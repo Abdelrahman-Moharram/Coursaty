@@ -5,13 +5,14 @@ from .serializers import CourseListSerial, CourseDetailsSerial, DetailedIncluded
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from .permissions import IsOwnCourse
+from instructor.permissions import IsCourseInstructorOrAdmin
 from .Payments import apply_stripe_payment
 from rest_framework.renderers import JSONRenderer
 from django.conf import settings
 from django.db.models import Q
 from .forms import course_form
-
-
+import json
+from django.contrib.auth import authenticate
 def to_int(val, default):
     if val:
         try:
@@ -56,6 +57,61 @@ def create_course(request):
     return response.Response({
         'errors': form.errors.as_data()
     }, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes((IsCourseInstructorOrAdmin,))
+def EditCourse(request, id):
+    course = Course.objects.filter(id=id).first()
+    if not course:
+        return response.Response(
+            {
+                'message': 'this course not found or may be deleted'
+            }, 
+            status=status.HTTP_404_NOT_FOUND
+        ) 
+
+    form = course_form(request.POST, instance=course)
+    if form.is_valid():
+        form = form.save()
+        return response.Response({'message':f"course {course.name} updated succesfully successfully"}, status=status.HTTP_200_OK)
+        
+    return response.Response({
+        'errors': form.errors.as_data()
+    }, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes((IsCourseInstructorOrAdmin,))
+def DeleteCourse(request, course_id):
+    course = Course.objects.filter(id=course_id)
+    if not course:
+        return response.Response(
+            {
+                'message': 'this course not found or may be deleted'
+            }, 
+            status=status.HTTP_404_NOT_FOUND
+        ) 
+
+    body = json.loads(request.body)
+    if 'password' in body:
+        user = authenticate(request, username=request.user.email, password=body['password'])
+        if not user:
+            return response.Response(
+                {
+                    'message':"password is incorrect make sure you enter the right one"
+                }, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        name = course[0].name
+        course.delete()
+        return response.Response({'message':f"course {name} deleted succesfully successfully"}, status=status.HTTP_200_OK)
+        
+    return response.Response({
+        'errors':{
+            'password':["password shouldn't be null"]
+        }
+    }, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -151,7 +207,7 @@ def purchase_course(request, id):
 
 
 @api_view(['GET'])
-@permission_classes((IsAuthenticated, IsOwnCourse))
+@permission_classes((IsAuthenticated))
 def GetCoursesFromDep(request, id):
     courses = Course.objects.filter(
         Q(category=id) | Q(subcategory=id) | Q(industry=id)

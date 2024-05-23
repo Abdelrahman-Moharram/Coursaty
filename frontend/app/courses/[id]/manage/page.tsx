@@ -2,7 +2,6 @@
 import React from 'react'
 import { useGetCourseStaticsPageQuery } from '@/redux/api/Instructor'
 import { useParams, useRouter } from 'next/navigation'
-import BaseChart from '@/Components/charts/BaseChart'
 import { toast } from 'react-toastify'
 import Header from './_components/header'
 import CourseBanner from '../_components/CourseBanner'

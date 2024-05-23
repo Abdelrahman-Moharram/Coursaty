@@ -1,10 +1,11 @@
 'use client'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import CourseForm from './_components/CourseForm'
 import { useGetIndustriesQuery, useGetCategoriesMutation, useGetSubCategoriesMutation } from '@/redux/api/homeApi'
-import { useCreateCourseMutation } from '@/redux/api/Courses'
+import { useCreateCourseMutation, useEditCourseMutation } from '@/redux/api/Courses'
 import { toast } from 'react-toastify'
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import CourseForm from '@/app/instructor/courses/[create]/_components/CourseForm'
+import { useGetCourseBaseQuery } from '@/redux/api/Instructor'
 
 interface courseFormType{
   name: string
@@ -12,21 +13,37 @@ interface courseFormType{
   category: string
   subcategory: string
   industry: string
-  image: File | null
+  // image: File | null
   price: number
 }
 
 const page = () => {
-  const router = useRouter()
+  const {id}:{id:string} = useParams()
+  const {data:oldCourse, isLoading:oldCourseLoading} = useGetCourseBaseQuery({id})
+  
   const [courseForm, setCourseForm] = useState<courseFormType>({
     name:'',
     description: '',
     category: '',
     subcategory: '',
     industry: '',
-    image: null,
+    // image: null,
     price:0
 })
+useEffect(()=>{
+  if (oldCourse){
+    setCourseForm({
+      name: oldCourse?.course?.name,
+      description: oldCourse?.course?.description,
+      category: oldCourse?.course?.subcategory.category?.id,
+      subcategory: oldCourse?.course?.subcategory?.id,
+      industry: oldCourse?.course?.subcategory.category?.industry.id,
+      // image: oldCourse?.course?.image,
+      price:oldCourse?.course?.price
+    })
+    
+  }
+},[oldCourseLoading])
 const [formErrors, setFormErrors] = useState(null)
 const onChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> ) => {
 const { name, value } = event.target;
@@ -45,7 +62,7 @@ const imageChange = (e: ChangeEvent<HTMLInputElement> )=>{
   const {data: industries} = useGetIndustriesQuery(undefined)
   const [getCategory, {data: categories}] = useGetCategoriesMutation()
   const [getSubCategory, {data: subcategories}] = useGetSubCategoriesMutation()
-  const [createCourse, {data, isLoading}] = useCreateCourseMutation()
+  const [editCourse, {isLoading}] = useEditCourseMutation()
   useEffect(()=>{   
     if(courseForm.industry)
       getCategory({id:courseForm.industry})
@@ -58,20 +75,22 @@ const imageChange = (e: ChangeEvent<HTMLInputElement> )=>{
 
   const formSubmit = (event: FormEvent<HTMLFormElement>) =>{
     event.preventDefault()
+    console.log(courseForm);
+    
     const formData = new FormData()
     formData.append('name', courseForm.name)
     formData.append('description', courseForm.description)
     formData.append('category', courseForm.category)
     formData.append('industry', courseForm.industry)
     formData.append('subcategory', courseForm.subcategory)
-    formData.append('image', courseForm.image ?? "")
+    // formData.append('image', courseForm.image ?? "")
     formData.append('price', courseForm.price.toString())
      
-    createCourse(formData)
+    editCourse({id,form:formData})
     .unwrap()
     .then(data=>{
       toast.success(data?.message)
-      router.push("/courses/"+data?.id+"/manage")
+      // router.push("/courses/"+data?.id+"/manage")
     })
     .catch((err:any)=>{     
       setFormErrors(err.data.errors)
@@ -79,7 +98,7 @@ const imageChange = (e: ChangeEvent<HTMLInputElement> )=>{
   }
   return (
     <div className='w-full mx-auto bg-white rounded-lg my-3 overflow-hidden p-5'>
-      <h1 className='text-2xl font-bold my-5'>Create A New Course</h1>
+      <h1 className='text-2xl font-bold my-5'>{courseForm.name}</h1>
       <CourseForm
         industries={industries?.industries}
         categories={categories?.categories}
@@ -91,6 +110,7 @@ const imageChange = (e: ChangeEvent<HTMLInputElement> )=>{
         formSubmit={formSubmit}
         isLoading={isLoading}
         errors={formErrors}
+        type='Save'
       />
     </div>
   )

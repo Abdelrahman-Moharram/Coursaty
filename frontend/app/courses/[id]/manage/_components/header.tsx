@@ -1,7 +1,9 @@
 import { ImageSkeleton } from '@/Components/Common'
 import BasicRating from '@/Components/Common/BasicRate'
 import Breadcrumb from '@/Components/Common/Breadcrumb';
+import Link from 'next/link';
 import React from 'react'
+import { FaEdit } from 'react-icons/fa';
 
 interface props{
     course:courseType
@@ -73,8 +75,11 @@ const Header = ({course}:props) => {
     {
         course?
         <>
-            <h1 className='text-2xl font-bold my-4'>
+            <h1 className='text-2xl font-bold my-4 flex items-center gap-2'>
                 {course?.name}
+                <Link title='edit course' href={"manage/settings"} className='text-primary p-3 rounded-full hover:bg-gray-200'>
+                    <FaEdit />
+                </Link>
             </h1>
             <div className="m-3">
                 <Breadcrumb items={BreadcrumbList()} />

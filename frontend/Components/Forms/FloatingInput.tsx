@@ -1,4 +1,5 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
+import { FaEye } from 'react-icons/fa';
 
 interface props {
 	labelId: string;
@@ -21,11 +22,13 @@ const FloatingInput = ({
     children,
     errors
 }: props) => {
+    const [inputType, setInputType] = useState(type)
+    
   return (
     <>
         <label
             htmlFor={labelId}
-            className={"relative block rounded-md borde shadow-sm "+ (errors?.length?"border-red-500":"border-primary/80")}
+            className={"relative block rounded-md borde shadow-md "+ (errors?.length?"border-red-500":"border-primary/80")}
         >
             <input
                 type={type}
@@ -42,6 +45,18 @@ const FloatingInput = ({
                 >
                     {label}
                 </span>
+                {
+                    type === 'password'?
+                        <button 
+                            onClick={()=>{
+                                type = 'text'
+                            }}
+                            className='absolute right-1 rounded-full top-1 p-2 hover:bg-gray-100'
+                        >
+                            <FaEye />
+                        </button>
+                    :null
+                }
                 {children}
         </label>
         {

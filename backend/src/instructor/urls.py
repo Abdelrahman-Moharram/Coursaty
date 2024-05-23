@@ -4,12 +4,14 @@ from .views import(
     Course_Sections,
     delete_content,
     add_content,
-    edit_content
+    edit_content,
+    Course_base
 )
 
 app_name = 'instructor'
 
 urlpatterns = [
+    path("courses/<str:course_id>/", Course_base, name='Course'),
     path("courses/<str:course_id>/manage/", course_info, name='course_info'),
     path("courses/<str:course_id>/manage/sections/", Course_Sections, name='course_info'),
     path("contents/<str:content_id>/delete/", delete_content, name='delete_content'),

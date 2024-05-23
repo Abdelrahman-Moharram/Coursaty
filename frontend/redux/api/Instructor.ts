@@ -10,7 +10,13 @@ const InstructorsApiSlice = apiSlice.injectEndpoints({
                 }),
                 providesTags: ['contents'],
             }),
-
+            getCourseBase:builder.query({
+                query:({id}:{id:string})=>({
+                    url:`instructor/courses/${id}/`,
+                    method:'GET',
+                }),
+                providesTags:['course_base']
+            }),
             getCourseSectionsAndContentPage:builder.query({
                 query:({id}:{id:string})=>({
                     url:`instructor/courses/${id}/manage/sections/`,
@@ -52,5 +58,6 @@ export const {
     useGetCourseSectionsAndContentPageQuery,
     useDeleteCourseContentMutation,
     useAddCourseContentMutation,
-    useEditCourseContentMutation
+    useEditCourseContentMutation,
+    useGetCourseBaseQuery
 } = InstructorsApiSlice

@@ -5,8 +5,8 @@ import { IoIosCloudUpload } from "react-icons/io";
 interface props {
 	labelId: string;
 	type: string;
-	onChange: (e:ChangeEvent<HTMLInputElement>) => void;
-	file:  File | null;
+	onChange?: (e:ChangeEvent<HTMLInputElement>) => void;
+	file?:  File | string | null;
 	label: string
 	required?: boolean;
     errors?: string[];
@@ -23,9 +23,8 @@ const ImageInput = ({labelId,
 
 }: props) => {
     let objectUrl = undefined
-    if(file){
-        console.log(file);
-        
+    console.log(file);
+    if(file && typeof(file) !== 'string'){
         objectUrl = URL.createObjectURL(file)
     }
   return (
@@ -41,7 +40,14 @@ const ImageInput = ({labelId,
                 file? 
                     <div className='relative'>
                         {
-                            file.type.includes("image")?
+                            typeof(file) === 'string'?
+                            <img 
+                                src={process.env.NEXT_PUBLIC_HOST+file} 
+                                className='inputImage fade-in rounded-md'
+                                alt="uploaded course image" 
+                            />
+                            :
+                            file?.type?.includes("image")?
                                 <img 
                                     src={objectUrl} 
                                     className='inputImage fade-in rounded-md'

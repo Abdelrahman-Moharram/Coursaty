@@ -17,7 +17,7 @@ interface courseFormType{
     category: string
     subcategory: string
     industry: string
-    image: Blob | undefined
+    image?: File | null
     price: number
   }
   
@@ -27,11 +27,12 @@ interface Props{
     subcategories: baseType[]
     onChange:(event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> )=>void;
     selectChange:(e: ChangeEvent<HTMLSelectElement> )=> void;
-    imageChange: (e: ChangeEvent<HTMLInputElement> )=> void;
+    imageChange?: (e: ChangeEvent<HTMLInputElement> )=> void;
     courseForm:courseFormType,
     formSubmit:(e:FormEvent<HTMLFormElement>) =>void
     isLoading:boolean
     errors?:any | null
+    type?: string
 }
 
 const CourseForm = (
@@ -44,11 +45,12 @@ const CourseForm = (
     courseForm,
     formSubmit,
     isLoading,
-    errors
+    errors,
+    type
     }:Props
 ) => {    
   return (
-    <div className='lg:w-[50%] w-full'>
+    <div className='w-full'>
       <form
         encType='multipart/form-data'
         onSubmit={(e)=>formSubmit(e)}
@@ -163,19 +165,23 @@ const CourseForm = (
                 </div>
             </FloatingInput>
         </div>
-        <div className="mb-4">
-            <ImageInput
-                labelId={'image'}
-                type={'file'}
-                onChange={imageChange}
-                file={courseForm.image}
-                label={'Course Image'}
-                required= {false}
-                errors={errors?.subcategory}
-            />
-        </div>
+        {
+            courseForm.image?
+            <div className="mb-4">
+                <ImageInput
+                    labelId={'image'}
+                    type={'file'}
+                    onChange={imageChange}
+                    file={courseForm.image}
+                    label={'Course Image'}
+                    required= {false}
+                    errors={errors?.subcategory}
+                />
+            </div>
+        :null
+        }
         <div className="flex justify-end">
-            <Button title='Create' isLoading={isLoading} submit />
+            <Button title={type?type:'Create'} isLoading={isLoading} submit />
         </div>
 
       </form>

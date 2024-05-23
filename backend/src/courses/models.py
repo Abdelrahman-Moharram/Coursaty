@@ -30,7 +30,7 @@ class Industry(models.Model):
     image               = models.ImageField(default="coursatty-favicon-black.png",upload_to=industrysave, null=True)
     is_deleted          = models.BooleanField(default=False)
     created_at          = models.DateTimeField(auto_now=True, auto_now_add=False)
-    created_by          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    created_by          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     def __str__(self) -> str:
         return self.name
 
@@ -41,8 +41,8 @@ class Category(models.Model):
     image               = models.ImageField(default="coursatty-favicon-black.png",upload_to=categorysave, null=True)
     is_deleted          = models.BooleanField(default=False)
     created_at          = models.DateTimeField(auto_now=True, auto_now_add=False)
-    created_by          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    industry            = models.ForeignKey(Industry, on_delete=models.PROTECT)
+    created_by          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    industry            = models.ForeignKey(Industry, on_delete=models.CASCADE)
     def __str__(self) -> str:
         return self.name
 
@@ -51,8 +51,8 @@ class SubCategory(models.Model):
     id                  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name                = models.CharField(max_length=255)
     is_deleted          = models.BooleanField(default=False)
-    created_by          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    category            = models.ForeignKey(Category, on_delete=models.PROTECT)
+    created_by          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    category            = models.ForeignKey(Category, on_delete=models.CASCADE)
     def __str__(self) -> str:
         return self.name
 
@@ -60,10 +60,10 @@ class Course(models.Model):
     id                  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name                = models.CharField(max_length=255)
     description         = models.TextField()
-    instructor          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    category            = models.ForeignKey(Category, on_delete=models.PROTECT)
-    subcategory         = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
-    industry            = models.ForeignKey(Industry, on_delete=models.PROTECT, null=True, blank=True)
+    instructor          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    category            = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+    subcategory         = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
+    industry            = models.ForeignKey(Industry, on_delete=models.DO_NOTHING, null=True, blank=True)
     image               = models.ImageField(default="coursatty-high-resolution-logo-white.png",upload_to=coursesave, null=True)
     is_deleted          = models.BooleanField(default=False)
     created_at          = models.DateTimeField(auto_now=True, auto_now_add=False)
@@ -95,14 +95,14 @@ class Course(models.Model):
 class Section(models.Model):
     id                  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name                = models.CharField(max_length=255)
-    course              = models.ForeignKey(Course, on_delete=models.PROTECT)
+    course              = models.ForeignKey(Course, on_delete=models.CASCADE)
     is_deleted          = models.BooleanField(default=False)
     def __str__(self) -> str:
         return self.name
 
 class Content(models.Model):
     id                  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    section             = models.ForeignKey(Section, on_delete=models.PROTECT)
+    section             = models.ForeignKey(Section, on_delete=models.CASCADE)
     name                = models.CharField(max_length=255)
     is_deleted          = models.BooleanField(default=False)
     video               = models.FileField(upload_to='courses/videos', max_length=100, null=True, blank=True)
@@ -112,8 +112,8 @@ class Content(models.Model):
 
 class user_courses(models.Model):
     id                  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    course              = models.ForeignKey(Course, on_delete=models.PROTECT)
-    user                = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    course              = models.ForeignKey(Course, on_delete=models.CASCADE)
+    user                = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     added_at            = models.DateTimeField(auto_now=False, auto_now_add=True)
     rating              = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=True, blank=True)
     def __str__(self):

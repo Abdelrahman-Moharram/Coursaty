@@ -11,6 +11,7 @@ const CourseApiSlice = apiSlice.injectEndpoints({
                 })
             }),
 
+            
             getCourseDetailsPage:builder.query({
                 query:(id:string)=>({
                     url:`/courses/${id}/`,
@@ -46,12 +47,32 @@ const CourseApiSlice = apiSlice.injectEndpoints({
                 query:(form)=>{
                     
                     return {
-                        url: `courses/`,
+                        url: `courses/create/`,
                         method: 'POST',
                         body: form,
                     }
                 }
-            })
+            }),
+            editCourse: builder.mutation({
+                query:({id, form}:{id:string, form:FormData})=>{
+                    
+                    return {
+                        url: `courses/${id}/edit`,
+                        method: 'POST',
+                        body: form,
+                    }
+                }
+            }),
+            deleteCourse: builder.mutation({
+                query:({id, password}:{id:string, password:string})=>{
+                    
+                    return {
+                        url: `courses/${id}/delete`,
+                        method: 'POST',
+                        body: {password},
+                    }
+                }
+            }),
             
     }) 
 })
@@ -63,5 +84,7 @@ export const {
     useGetCourseContentQuery,
     useGetUserCoursesQuery,
     useCreateCourseMutation,
-    useGetSectionContentMutation
+    useGetSectionContentMutation,
+    useEditCourseMutation,
+    useDeleteCourseMutation
 } = CourseApiSlice

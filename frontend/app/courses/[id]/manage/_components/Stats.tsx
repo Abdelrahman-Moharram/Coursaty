@@ -21,7 +21,7 @@ const Stats = ({purchasing_histroy}:Props) => {
         </div>
         <div className="col-span-1">
           <div className="rounded-md bg-gray-100 gap-2 grid grid-rows-2 p-3 mt-8 h-[90%]">           
-             <BasicCard textcolor='text-blue-600' title='Total In Roled' value={purchasing_histroy?.total.toString()} />
+             <BasicCard textcolor='text-blue-600' title='Total Enrolled' value={purchasing_histroy?.total.toString()} />
              <BasicCard textcolor='text-green-600' title='Total Profit' value={purchasing_histroy?.total_earned.toString()} />
           </div>
         </div>

@@ -33,8 +33,6 @@ class course_form(forms.ModelForm):
     
     def clean_name(self, *args, **kwargs):
         name = self.cleaned_data.get('name')
-        if Course.objects.filter(name=name).exists():
-            raise forms.ValidationError("Course with this name already exists")
         return name.strip()
     
     def clean_description(self, *args, **kwargs):

@@ -105,6 +105,22 @@ def add_content(request, course_id, section_id):
         )
 
 
+
+@api_view(['GET'])
+@permission_classes((IsCourseInstructorOrAdmin,))
+def Course_base(request, course_id):
+    course = Course.objects.get(id=course_id)
+    courseSerial = CourseListSerial(data=[course], many=True, allow_null=True)
+    
+    if courseSerial.is_valid():
+        pass
+    return response.Response(data={
+        "course":courseSerial.data[0],
+    }, status=status.HTTP_200_OK)
+
+
+
+
 @renderer_classes((JSONRenderer))
 @api_view(['POST'])
 @permission_classes((IsContentOwnerOrAdmin,))
