@@ -3,18 +3,22 @@ import React from 'react'
 
 interface props{
     name: string;
-    image: string;
+    image?: string;
 }
 const header = ({name, image}: props) => {
   return (
     <div className='flex items-center '>
         {
-            image?
+            image || name?
             <>
-                <img 
-                    src={process.env.NEXT_PUBLIC_HOST+image} 
-                    className="w-[100px]" 
-                />
+                {
+                    image?
+                        <img 
+                            src={process.env.NEXT_PUBLIC_HOST+image} 
+                            className="w-[100px]" 
+                        />
+                    :null
+                }
                 <h1 className='text-3xl font-bold '>{name}</h1>
             </>
             : 

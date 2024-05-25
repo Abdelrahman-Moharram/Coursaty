@@ -33,6 +33,7 @@ interface Props{
     isLoading:boolean
     errors?:any | null
     type?: string
+    add?:boolean
 }
 
 const CourseForm = (
@@ -46,7 +47,8 @@ const CourseForm = (
     formSubmit,
     isLoading,
     errors,
-    type
+    type,
+    add
     }:Props
 ) => {    
   return (
@@ -166,18 +168,18 @@ const CourseForm = (
             </FloatingInput>
         </div>
         {
-            courseForm.image?
-            <div className="mb-4">
-                <ImageInput
-                    labelId={'image'}
-                    type={'file'}
-                    onChange={imageChange}
-                    file={courseForm.image}
-                    label={'Course Image'}
-                    required= {false}
-                    errors={errors?.subcategory}
-                />
-            </div>
+            add?
+                <div className="mb-4">
+                    <ImageInput
+                        labelId={'image'}
+                        type={'file'}
+                        onChange={imageChange}
+                        file={courseForm.image}
+                        label={'Course Image'}
+                        required= {false}
+                        errors={errors?.subcategory}
+                    />
+                </div>
         :null
         }
         <div className="flex justify-end">

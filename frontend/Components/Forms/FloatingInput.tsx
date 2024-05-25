@@ -22,7 +22,6 @@ const FloatingInput = ({
     children,
     errors
 }: props) => {
-    const [inputType, setInputType] = useState(type)
     
   return (
     <>

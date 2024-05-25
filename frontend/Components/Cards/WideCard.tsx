@@ -3,6 +3,12 @@ import React from 'react'
 import CardBadge from './CardBadge'
 import Image from 'next/image';
 
+
+interface subcategory{
+    id: string;
+    name: string;
+    category: categoryType
+}
 interface categoryType{
     id: string;
     name: string;
@@ -21,18 +27,19 @@ interface categoryType{
       description: string,
       created_at: Date,
       instructor: userType;
-      category: categoryType;
+      subcategory: subcategory;
   }
 interface props{
-    course: courseType
+    course: courseType,
+    prefix: string
 }
-const WideCard = ({course}:props) => {
+const WideCard = ({course, prefix}:props) => {
     const created_date = () => {
         const date = new Date(course.created_at)
         return date.toDateString()
     }
   return (
-    <Link href={"/courses/"+course.id} className="rounded-xl bg-white p-4 shadow-default-sm sm:p-6 lg:p-8">
+    <Link href={prefix+course.id} className="rounded-xl bg-white p-4 shadow-default-sm sm:p-6 lg:p-8">
         <div className="flex items-start gap-4 lg:gap-7">
             <div
                 className="w-[20%] min-w-[100px]"
@@ -47,7 +54,7 @@ const WideCard = ({course}:props) => {
             </div>
 
             <div>
-            <CardBadge title={course.category.name} href={'/categories/'+course.id} />
+            <CardBadge title={course?.subcategory?.category.name} href={'/categories/'+course?.subcategory?.category.id} />
 
             <h3 className="mt-4 text-lg font-medium sm:text-xl">
                 {course.name}
@@ -86,7 +93,14 @@ const WideCard = ({course}:props) => {
                 </div>
 
             </div>
-            <div className='block text-end font-bold mt-3'>{course.price} L.E</div>
+            <div className='block text-end font-bold mt-3'>
+            {
+                course.price > 0?
+                    course.price + " L.E"
+                : 
+                    "Free"
+            }
+            </div>
             </div>
         </div>
     </Link>

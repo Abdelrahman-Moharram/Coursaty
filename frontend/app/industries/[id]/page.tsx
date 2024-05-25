@@ -22,13 +22,13 @@ const page = ({params}:Props) => {
       <hr className='mb-8' />
       
       <h2 className='text-xl font-bold mb-5  mt-20`'>All Categories</h2>
-      <SmallCardsList skeletonWidth='470px' SkeletonNum={9} items={data?.industry.Categories}  preLink='categories' />
+      <SmallCardsList skeletonWidth='470px' SkeletonNum={9} items={data?.industry.Categories}  preLink={`industries/${id}`} />
 
       
       <hr className='mt-8'/>
       <h2 className='text-xl font-bold mt-20'>Top Courses</h2>
 
-      <AllCoursesList courses={data?.industry.courses} />
+      <AllCoursesList prefix='/courses/' courses={data?.industry.courses} />
     </div>
   )
 }

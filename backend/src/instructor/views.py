@@ -6,7 +6,7 @@ from django.db import models
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework.renderers import JSONRenderer
-from .permissions import IsCourseInstructorOrAdmin, IsContentOwnerOrAdmin
+from .permissions import IsCourseInstructorOrAdmin, IsContentOwnerOrAdmin, IsSectionOwnerOrAdmin
 from courses.serializers import CourseListSerial, SectionsSerial
 import json
 def clean_purchasing_history(purchasing_histroy, price):
@@ -23,6 +23,34 @@ def clean_purchasing_history(purchasing_histroy, price):
     cleaned_purchasing_history['total_earned'] = cleaned_purchasing_history['total'] * price 
     return cleaned_purchasing_history
 
+def to_int(val, default):
+    if val:
+        try:
+            return int(val)
+        except:
+            pass
+    return default
+        
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def Course_List(request):
+    page = to_int(request.GET.get('page'), 0)
+    size = to_int(request.GET.get('size'), 10)
+    
+    courses_serial = CourseListSerial(
+        data=Course.objects.filter(instructor=request.user)[page*size : (page+1) * size], 
+        many=True
+    )
+
+    if courses_serial.is_valid():
+        pass
+    return response.Response({
+        "page" : page,
+        "size": size,
+        "total":int(Course.objects.count()/size) or 1,
+        "courses": courses_serial.data,
+    }, status=status.HTTP_200_OK)
 
 
 @renderer_classes((JSONRenderer))
@@ -79,11 +107,57 @@ def Course_Sections(request, course_id):
 @renderer_classes((JSONRenderer))
 @api_view(['POST'])
 @permission_classes((IsCourseInstructorOrAdmin,))
+def Create_Section(request, course_id):
+    try:
+        body = json.loads(request.body)
+        if 'section_name' not in body:
+            return response.Response(
+                data={'message': "section name can't be empty"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        section = Section.objects.create(course_id=course_id, name=body['section_name'])
+        section.save()
+
+        return response.Response(
+            data={
+                'message': f'section {body['section_name']} added successfully!'
+            }, 
+            status=status.HTTP_201_CREATED)
+    except:
+        return response.Response(
+            data={'message': 'something went wrong contact the admin'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+@renderer_classes((JSONRenderer))
+@api_view(['DELETE'])
+@permission_classes((IsSectionOwnerOrAdmin,))
+def Delete_Section(request, section_id):
+    try:
+        section = Section.objects.filter(id=section_id)
+        name = section[0].name
+        section.delete()
+
+        return response.Response(
+            data={
+                'message': f'section {name} deleted successfully!'
+            }, 
+            status=status.HTTP_200_OK)
+    except:
+        return response.Response(
+            data={'message': 'something went wrong contact the admin'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+@renderer_classes((JSONRenderer))
+@api_view(['POST'])
+@permission_classes((IsCourseInstructorOrAdmin,))
 def add_content(request, course_id, section_id):
     body = json.loads(request.body)
-    print(body)
     try:
-        if not body['name']:
+        if 'name' not in body:
             return response.Response(
                 data={'message': "content name can't be empty"}, 
                 status=status.HTTP_400_BAD_REQUEST
@@ -97,7 +171,7 @@ def add_content(request, course_id, section_id):
                 'message': f'content {content.name} added successfully!'
             }, 
             status=status.HTTP_201_CREATED)
-        pass
+        
     except:
         return response.Response(
             data={'message': 'something went wrong contact the admin'}, 

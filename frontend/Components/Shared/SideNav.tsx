@@ -19,7 +19,7 @@ export default function SideNav({className}:{className:string}) {
 
                         <li>
                             <Link
-                                href={`/courses/${id}/manage`}
+                                href={`/instructor/courses/${id}`}
                                 className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                             >
                                 <FaHome />
@@ -29,7 +29,7 @@ export default function SideNav({className}:{className:string}) {
 
                         <li>
                             <Link
-                                href={`/courses/${id}/manage/sections&content`}
+                                href={`/instructor/courses/${id}/sections&content`}
                                 className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                             >
                                 <RiMovieLine className="text-sm" />
@@ -65,7 +65,7 @@ export default function SideNav({className}:{className:string}) {
                             <ul className="mt-2 space-y-1 px-4">
                                 <li>
                                 <Link
-                                    href={`/courses/${id}/manage/settings`}
+                                    href={`/instructor/courses/${id}/settings`}
                                     className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                                 >
                                     <IoSettingsSharp />
@@ -75,7 +75,7 @@ export default function SideNav({className}:{className:string}) {
 
                                 <li>
                                 <a
-                                    href={`/courses/${id}/manage/delete`}
+                                    href={`/instructor/courses/${id}/delete`}
                                     className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-100"
                                 >
                                     <FaTrash />

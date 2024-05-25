@@ -33,7 +33,7 @@ const SmallCardsList = ({items, preLink, SkeletonNum, skeletonHeight, skeletonWi
   return (
     <div className={items?.length?"grid grid-cols-2 gap-4 sm:grid-cols-3":""}>
       {
-        waitingDelay? 
+        items?.length || waitingDelay? 
           items?.length?
           items.map((cat:itemType)=>(
                 <SmallCard preLink={preLink} item={cat} key={cat.id} />

@@ -10,7 +10,8 @@ from courses.serializers import (
     IncludedSubCategoryBaseSerial,
     IncludedIndustrySerial,
     CourseListSerial,
-    IndustrySerial
+    IndustrySerial,
+    CategorySerial
 )
 
 @api_view(['GET'])
@@ -59,6 +60,21 @@ def GetAllIndustries(request):
     return response.Response(data={
        'industries': industrySerial.data,
     }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def GetAllCategories(request):
+    categorySerial  = CategorySerial(data=
+        Category.objects.all(), 
+        many=True
+    )
+    if not categorySerial.is_valid():
+        pass
+    return response.Response(data={
+       'industries': categorySerial.data,
+    }, status=status.HTTP_200_OK)
+
+
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -115,3 +131,63 @@ def GetIndustryById(request, id):
     return response.Response(data={
        'industry': industrySerial.data[0],
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def GetCategoryById(request, category_id):
+    categorySerial  = CategorySerial(data=
+        Category.objects.filter(id=category_id), 
+        many=True
+    )
+    if not categorySerial.is_valid():
+        pass
+    if len(categorySerial.data):
+        return response.Response(data={
+        'category': categorySerial.data[0],
+        }, status=status.HTTP_200_OK)
+    return response.Response(data={
+        'category': [],
+        }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def GetAllSubCategories(request, sub_id):
+    
+    subcategory_serial = IncludedSubCategoryBaseSerial(data=SubCategory.objects.all(), many=True)
+    if subcategory_serial.is_valid():
+        pass
+
+    if not len(subcategory_serial.data):
+        return response.Response(
+            data={'subcategories':[]},
+            status=status.HTTP_200_OK
+        )
+    return response.Response(
+        data={
+            'subcategories': subcategory_serial.data,
+        },
+        status=status.HTTP_200_OK
+    )
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def GetSubCategoryById(request, sub_id):
+    sub = SubCategory.objects.filter(id=sub_id).first()
+    courses = Course.objects.filter(subcategory_id=sub_id)
+    courseSerial = CourseListSerial(data=courses, many=True)
+    if courseSerial.is_valid():
+        pass
+
+    
+    return response.Response(
+        data={
+            'subcategory': {
+                'id':sub.id,
+                'name':sub.name,
+                'courses': courseSerial.data
+            },
+            
+        },
+        status=status.HTTP_200_OK
+    )

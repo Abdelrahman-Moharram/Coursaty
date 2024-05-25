@@ -31,12 +31,15 @@ interface categoryType{
       subcategory: subcategory;
   }
 interface props{
-    course:courseType
+    course:courseType,
+    prefix:string
 }
 
-const CourseCard = ({course}:props) => {
+const CourseCard = ({course, prefix}:props) => {
+    console.log(course);
+    
   return (
-    <a href={"/courses/"+course.id} className="shadow-xl group relative block overflow-hidden h-auto rounded-lg">
+    <a href={prefix+course.id} className="shadow-xl group relative block overflow-hidden h-auto rounded-lg">
         <button
             className="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75"
         >
@@ -56,7 +59,7 @@ const CourseCard = ({course}:props) => {
             />
 
         <div className="relative border border-gray-100 bg-white p-6">
-            <CardBadge title={course.subcategory?.category?.name} href={'/categories/'+course.subcategory.category?.id} />
+            <CardBadge title={course.subcategory?.category?.name} href={'/categories/'+course.subcategory?.category.id} />
 
             <h3 className="mt-4 text-sm font-medium text-gray-900 truncate">{course.name}</h3>
 

@@ -3,6 +3,13 @@ import { apiSlice } from "../services/apiSlice";
 
 const InstructorsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder)=>({
+            getCourseListPage:builder.query({
+                query:({page, size}:{page:number, size:number})=>({
+                    url:"/courses/",
+                    method:'GET',
+                    params:{page:page, size:size}
+                })
+            }),
             getCourseStaticsPage:builder.query({
                 query:({id}:{id:string})=>({
                     url:`instructor/courses/${id}/manage/`,
@@ -49,15 +56,34 @@ const InstructorsApiSlice = apiSlice.injectEndpoints({
                 }),
                 invalidatesTags: ['contents']
             }),
+
+            addNewSection:builder.mutation({
+                query:({course_id, section_name}:{course_id:string, section_name:string})=>({
+                    url:`instructor/courses/${course_id}/manage/sections/create/`,
+                    method:'POST',
+                    body: {section_name}
+                }),
+                invalidatesTags: ['contents']
+            }),
+            DeleteSection:builder.mutation({
+                query:({section_id}:{section_id:string})=>({
+                    url:`instructor/sections/${section_id}/delete/`,
+                    method:'DELETE',
+                }),
+                invalidatesTags: ['contents']
+            }),
         }) 
 })
     
     
 export const {
+    useGetCourseListPageQuery,
     useGetCourseStaticsPageQuery,
     useGetCourseSectionsAndContentPageQuery,
     useDeleteCourseContentMutation,
     useAddCourseContentMutation,
     useEditCourseContentMutation,
-    useGetCourseBaseQuery
+    useGetCourseBaseQuery,
+    useAddNewSectionMutation,
+    useDeleteSectionMutation
 } = InstructorsApiSlice

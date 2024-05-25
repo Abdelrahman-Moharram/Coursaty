@@ -157,4 +157,29 @@ class IndustrySerial(serializers.ModelSerializer):
         representation["SubCategories"] = SubCategorySerial.data
 
         return representation
+
+class CategorySerial(serializers.ModelSerializer):
+    # courses_set = BaseCourseListSerial(many=True)
+    class Meta:
+        model = Category
+        fields = '__all__' 
+    def to_representation(self, instance):
+        courses_data = CourseListSerial(data=Course.objects.filter(category=instance.id), many=True)
+        if courses_data.is_valid():
+            pass
+        SubCategorySerial = IncludedSubCategoryBaseSerial(data=SubCategory.objects.filter(category__id=instance.id), many=True)
+
+
+        
+        if SubCategorySerial.is_valid():
+            pass
+        representation = dict()
+        representation["id"] = instance.id
+        representation["image"] = "/media/"+str(instance.image)
+        representation["name"] = instance.name
+        representation["description"] = instance.description
+        representation["courses"] = courses_data.data
+        representation["SubCategories"] = SubCategorySerial.data
+
+        return representation
         

@@ -83,7 +83,7 @@ export default function Navbar() {
                         </li>
 
                         <li>
-                            <Link className="text-gray-500 transition hover:text-gray-500/75" href="#"> Projects </Link>
+                            <Link className="text-gray-500 transition hover:text-gray-500/75" href="/industries"> Industries </Link>
                         </li>
 
                         <li>

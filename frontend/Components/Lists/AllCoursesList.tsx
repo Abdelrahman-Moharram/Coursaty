@@ -4,10 +4,17 @@ import ViewModeButtons from './ViewModeButtons';
 import { ImageSkeleton, Spinner } from '../Common';
 import EmptyContent from '../Common/EmptyContent';
 
+
+interface subcategory{
+  id: string;
+  name: string;
+  category: categoryType
+}
 interface categoryType{
   id: string;
   name: string;
 }
+
 
 interface userType{
   id: string;
@@ -22,12 +29,13 @@ interface courseType{
     description: string,
     created_at: Date,
     instructor: userType;
-    category: categoryType;
+    subcategory: subcategory;
 }
 interface props{
-    courses: courseType[]
+    courses: courseType[],
+    prefix: string
 }
-const AllCoursesList = ({courses}:props) => {
+const AllCoursesList = ({courses, prefix}:props) => {
   const [viewMode, setViewMode] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(false)
   const [waitingDelay, setWaitingDelay] = useState(true)
@@ -76,18 +84,18 @@ const AllCoursesList = ({courses}:props) => {
       <div className={"mt-4 grid gap-4 " + (viewMode == 1 ? "sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4" : "")}>
 
         {
-          waitingDelay || courses.length?
+          waitingDelay || courses?.length?
             viewMode == 0?
               !loading && courses?.length?
                 courses.map(course=>(
-                    <WideCard course={course} key={course.id} />
+                    <WideCard prefix={prefix} course={course} key={course.id} />
                   ))
               :
                 WideCardSkeleton()
             :
             !loading && courses?.length?
                 courses.map(course=>(
-                    <CourseCard course={course} key={course.id} />
+                    <CourseCard prefix={prefix} course={course} key={course.id} />
                   ))
               :
               handleImageSkeleton()
