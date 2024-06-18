@@ -4,6 +4,8 @@ import { useGetCourseListPageQuery } from '@/redux/api/Instructor'
 import React, { useCallback } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import Paginition from '@/Components/Lists/Paginition'
+import Breadcrumb from '@/Components/Common/Breadcrumb'
+import Link from 'next/link'
 
 
 interface categoryType{
@@ -70,7 +72,20 @@ const page = () => {
 
     return (
         <div className='lg:w-[80%] w-full mx-auto bg-white rounded-lg my-3 overflow-hiddenw-[80%] p-5'>
-
+            <div className="flex justify-between mb-4">
+                <Breadcrumb items={
+                    [{href:'/instructor', title:'Dashboard'}, {href:'/instructor/courses',title:'Courses'}]
+                } />
+                <div className="w-[200px] ">
+                    <Link
+                        
+                        className="block rounded-xl border border-gray-100 p-4 shadow-lg hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
+                        href={'/instructor/courses/create'}
+                    >
+                        <h2 className="mt-2 font-bold">Create Course</h2>
+                    </Link>
+                </div>
+            </div>
             <AllCoursesList prefix='/instructor/courses/' courses={data?.courses} />
             <div className='flex justify-center my-10 font-extrabold'>
                 <Paginition page={page} totalPages={data?.total} />

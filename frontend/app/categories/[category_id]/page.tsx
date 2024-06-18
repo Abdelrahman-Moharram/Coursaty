@@ -11,7 +11,6 @@ import SubCategories from '@/app/industries/[id]/[category_id]/_categories/SubCa
 const page = () => {
   const {id, category_id}:{id:string, category_id:string} = useParams()
   const {data} = useGetCategoryByIdQuery({category_id})
-  console.log(data);
   
     
   return (

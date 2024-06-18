@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 export default function useLogin() {
 	const router = useRouter();
+	const [errors, setErrors] = useState();
 	const dispatch = useAppDispatch();
 	const [login, { isLoading }] = useLoginMutation();
 
@@ -32,8 +33,9 @@ export default function useLogin() {
 				toast.success('Logged in');
 				router.push('/');
 			})
-			.catch(() => {
+			.catch((err) => {
 				toast.error('Failed to log in');
+				setErrors(err?.data);
 			});
 	};
 	return {
@@ -42,5 +44,6 @@ export default function useLogin() {
 		isLoading,
 		onChange,
 		onSubmit,
+		errors
 	};
 }

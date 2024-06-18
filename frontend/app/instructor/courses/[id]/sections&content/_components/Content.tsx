@@ -54,7 +54,6 @@ const Content = ({content}:Props) => {
     const { files } = e.target;
     if (files?.length){
       const file = files[0]
-      console.log(file.type);
       
       if (file && file.type.includes('video')){
         setContent({ ...tempContent, video: file });
@@ -80,7 +79,6 @@ const Content = ({content}:Props) => {
     }
   }
   const handleEdit = ()=>{
-    console.log(tempContent);
     const form = new FormData()
     form.append('name', tempContent.name)
     if(tempContent.video)
@@ -90,7 +88,7 @@ const Content = ({content}:Props) => {
     editCourseContent({content_id: content.id, form:form})
     .unwrap()
     .then(data=>{
-      console.log(data);
+
       setEditModal(!openEditModal)
       toast.success(`${content.name} updated successfully`)      
     }).catch(err=>{

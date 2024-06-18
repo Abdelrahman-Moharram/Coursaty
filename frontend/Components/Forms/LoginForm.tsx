@@ -5,7 +5,7 @@ import { Form } from '@/Components/Forms';
 import { useLogin } from '../Hooks';
 
 export default function LoginForm() {
-	const { email, password, isLoading, onChange, onSubmit } = useLogin();
+	const { email, password, isLoading, onChange, onSubmit, errors } = useLogin();
 
 	const config = [
 		{
@@ -35,6 +35,7 @@ export default function LoginForm() {
 			btnText='Sign in'
 			onChange={onChange}
 			onSubmit={onSubmit}
+			errors={errors}
 		/>
 	);
 }

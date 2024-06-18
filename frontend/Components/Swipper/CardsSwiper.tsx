@@ -16,7 +16,11 @@ interface categoryType{
   id: string;
   name: string;
 }
-
+interface subcategory{
+  id: string;
+  name: string;
+  category:categoryType
+}
 interface userType{
   id: string;
   first_name: string;
@@ -30,7 +34,7 @@ interface courseType{
   description: string,
   created_at: Date,
   instructor: userType;
-  category: categoryType;
+  subcategory: subcategory;
 }
 
 interface props{
@@ -79,7 +83,7 @@ const ScrollableCoursesList = ({courses}: props) => {
               { 
               courses.map((course)=>(
                   <SwiperSlide key={course?.id}>
-                      <CourseCard course={course}  />
+                      <CourseCard prefix='courses/' course={course}  />
                   </SwiperSlide>
                   ))
               }

@@ -23,7 +23,6 @@ const ImageInput = ({labelId,
 
 }: props) => {
     let objectUrl = undefined
-    console.log(file);
     if(file && typeof(file) !== 'string'){
         objectUrl = URL.createObjectURL(file)
     }

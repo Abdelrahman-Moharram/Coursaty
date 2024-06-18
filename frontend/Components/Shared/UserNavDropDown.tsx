@@ -7,12 +7,14 @@ import { useAppDispatch } from '@/redux/hooks';
 import { useLogoutMutation } from '@/redux/features/authApiSlice';
 import Image from 'next/image';
 import { ImageSkeleton } from '../Common';
+import { useRouter } from 'next/navigation';
 interface user {
     first_name:string;
     last_name: string;
     email:string;
     image:string | undefined;
-    id:number
+    id:number,
+    courses:number
 }
 
 interface Props{
@@ -20,6 +22,7 @@ interface Props{
 }
 
 const UserNavDropDown = ({user}:Props) => {
+    const router = useRouter()
     const dispatch = useAppDispatch();
     const [logout] = useLogoutMutation();
 
@@ -28,6 +31,7 @@ const UserNavDropDown = ({user}:Props) => {
 			.unwrap()
 			.then(() => {
 				dispatch(setLogout());
+        router.push('/')
 			});
 	};
     function classNames(...classes:string[]) {
@@ -75,7 +79,7 @@ const UserNavDropDown = ({user}:Props) => {
           >
             <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div className="py-1">
-                <MenuItem>
+                {/* <MenuItem>
                   {({ active }) => (
                     <Link
                       href={`/auth/profile/${user.id}`}
@@ -87,18 +91,33 @@ const UserNavDropDown = ({user}:Props) => {
                       Profile
                     </Link>
                   )}
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem>
                   {({ active }) => (
-                    <Link
-                      href="/auth/settings"
-                      className={classNames(
-                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                        'block px-4 py-2 text-sm'
-                      )}
-                    >
-                      Settings
-                    </Link>
+                    <>
+                      {
+                        user?.courses ?
+                          <Link
+                              href="/instructor"
+                              className={classNames(
+                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                'block px-4 py-2 text-sm'
+                              )}
+                            >
+                            Management & Dashboard
+                          </Link>
+                        :
+                        <Link
+                            href="/instructor/courses/create"
+                            className={classNames(
+                              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                              'block px-4 py-2 text-sm'
+                            )}
+                          >
+                          Become an instructor
+                        </Link>
+                      }
+                    </>
                   )}
                 </MenuItem>
               </div>

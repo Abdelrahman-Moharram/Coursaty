@@ -121,12 +121,18 @@ def CourseDetails(request, id):
     
     if courseSerial.is_valid():
         pass
-    isOwnCourse = 0
+    isCourseInstructor = False
+    isOwnCourse = False
     if request.user.is_authenticated:
-        isOwnCourse = len(user_courses.objects.filter(course_id=id, user=request.user)) > 0
+        isCourseInstructor = course.instructor == request.user
+        if isCourseInstructor:
+            isOwnCourse = True
+        else:    
+            isOwnCourse = len(user_courses.objects.filter(course_id=id, user=request.user)) > 0
     
     return response.Response(data={
         "course":courseSerial.data[0],
+        "isCourseInstructor": isCourseInstructor,
         "isOwnCourse": isOwnCourse
     }, status=status.HTTP_200_OK)
 

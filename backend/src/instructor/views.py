@@ -9,6 +9,8 @@ from rest_framework.renderers import JSONRenderer
 from .permissions import IsCourseInstructorOrAdmin, IsContentOwnerOrAdmin, IsSectionOwnerOrAdmin
 from courses.serializers import CourseListSerial, SectionsSerial
 import json
+
+
 def clean_purchasing_history(purchasing_histroy, price):
     cleaned_purchasing_history = {
         'years':[],
@@ -23,6 +25,23 @@ def clean_purchasing_history(purchasing_histroy, price):
     cleaned_purchasing_history['total_earned'] = cleaned_purchasing_history['total'] * price 
     return cleaned_purchasing_history
 
+
+def clean_purchasing_history_for_list(purchasing_histroy, courses):
+    cleaned_purchasing_history = {
+        'years':[],
+        'numbers': [],
+        'total': 0,
+        'total_earned': 0
+    }
+    for item in purchasing_histroy:
+        cleaned_purchasing_history['years'].append(item['year'])
+        cleaned_purchasing_history['numbers'].append(item['n'])
+        cleaned_purchasing_history['total'] += item['n']
+    for course in courses:
+        cleaned_purchasing_history['total_earned'] += user_courses.objects.filter(course_id=course.id).__len__() * course.price
+    return cleaned_purchasing_history
+
+
 def to_int(val, default):
     if val:
         try:
@@ -31,13 +50,34 @@ def to_int(val, default):
             pass
     return default
         
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def index(request):
+    courses = Course.objects.filter(instructor=request.user)
+    if not courses:
+        return response.Response({'message': 'No courses added yet'},status=status.HTTP_200_OK)
+    
+    purchasing_histroy = user_courses.objects.filter(course__in=courses).annotate(
+            year=ExtractYear('added_at'),
+            ).values(
+                'year'
+            ).annotate(
+                n=models.Count('pk')
+        ).order_by('year')
+    
+    
+    return response.Response(
+        data={
+            'purchasing_histroy': clean_purchasing_history_for_list(purchasing_histroy, courses),
+        }, 
+        status=status.HTTP_200_OK
+    )
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def Course_List(request):
     page = to_int(request.GET.get('page'), 0)
     size = to_int(request.GET.get('size'), 10)
-    
     courses_serial = CourseListSerial(
         data=Course.objects.filter(instructor=request.user)[page*size : (page+1) * size], 
         many=True

@@ -4,8 +4,8 @@ import { useGetIndustriesQuery, useGetCategoriesMutation, useGetSubCategoriesMut
 import { useCreateCourseMutation, useEditCourseMutation } from '@/redux/api/Courses'
 import { toast } from 'react-toastify'
 import { useParams, useRouter } from 'next/navigation';
-import CourseForm from '@/app/instructor/courses/[create]/_components/CourseForm'
 import { useGetCourseBaseQuery } from '@/redux/api/Instructor'
+import CourseForm from '@/app/instructor/courses/create/_components/CourseForm'
 
 interface courseFormType{
   name: string
@@ -75,7 +75,6 @@ const imageChange = (e: ChangeEvent<HTMLInputElement> )=>{
 
   const formSubmit = (event: FormEvent<HTMLFormElement>) =>{
     event.preventDefault()
-    console.log(courseForm);
     
     const formData = new FormData()
     formData.append('name', courseForm.name)

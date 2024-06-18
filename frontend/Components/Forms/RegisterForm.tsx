@@ -13,6 +13,7 @@ export default function RegisterForm() {
 		isLoading,
 		onChange,
 		onSubmit,
+		errors
 	} = useRegister();
 
 	const config = [
@@ -60,6 +61,7 @@ export default function RegisterForm() {
 			btnText='Sign up'
 			onChange={onChange}
 			onSubmit={onSubmit}
+			errors={errors}
 		/>
 	);
 }

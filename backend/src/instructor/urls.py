@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import(
+    index,
     course_info,
     Course_Sections,
     delete_content,
@@ -14,6 +15,7 @@ from .views import(
 app_name = 'instructor'
 
 urlpatterns = [
+    path("", index, name='index'),
     path("courses/", Course_List, name='Course_List'),
     path("courses/<str:course_id>/", Course_base, name='Course'),
     path("courses/<str:course_id>/manage/", course_info, name='course_info'),

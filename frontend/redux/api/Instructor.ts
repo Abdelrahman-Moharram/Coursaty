@@ -3,9 +3,15 @@ import { apiSlice } from "../services/apiSlice";
 
 const InstructorsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder)=>({
+            getIndexPage:builder.query({
+                query:()=>({
+                    url:"instructor/",
+                    method:'GET',
+                })
+            }),
             getCourseListPage:builder.query({
                 query:({page, size}:{page:number, size:number})=>({
-                    url:"/courses/",
+                    url:"instructor/courses/",
                     method:'GET',
                     params:{page:page, size:size}
                 })
@@ -77,6 +83,7 @@ const InstructorsApiSlice = apiSlice.injectEndpoints({
     
     
 export const {
+    useGetIndexPageQuery,
     useGetCourseListPageQuery,
     useGetCourseStaticsPageQuery,
     useGetCourseSectionsAndContentPageQuery,

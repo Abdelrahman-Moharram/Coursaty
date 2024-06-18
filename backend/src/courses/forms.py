@@ -5,17 +5,6 @@ from accounts.models import User
 
 
 class course_form(forms.ModelForm):
-    # def __init__(self, *args, **kwargs):
-    #     self.instructor = kwargs.pop('instructor', None)
-    #     print(self.instructor)
-    #     super().__init__(*args, **kwargs)
-    #     #self.fields['instructor'].queryset = User.objects.filter(id= self.instructor)
-    #     self.fields['instructor'] = self.request.user.id
-    # def __init__(self, *args, instructor=None, **kwargs):
-    #     super(course_form, self).__init__(*args, **kwargs)
-    #     print(instructor)
-    #     if instructor is not None:
-    #         self.fields['instructor'].queryset = User.objects.filter(id=instructor)
     class Meta:
         model = Course
         fields = [

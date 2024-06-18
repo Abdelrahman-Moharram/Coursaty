@@ -6,7 +6,8 @@ const homeApiSlice = apiSlice.injectEndpoints({
             getIndexPage: builder.query({
                 query:()=>({
                     url:""
-                })
+                }),
+                
             }),
             getIndustries: builder.query({
                 query:()=>({

@@ -74,9 +74,7 @@ const imageChange = (e: ChangeEvent<HTMLInputElement> )=>{
   },[courseForm.category])
 
   const formSubmit = (event: FormEvent<HTMLFormElement>) =>{
-    event.preventDefault()
-    console.log(courseForm);
-    
+    event.preventDefault()    
     const formData = new FormData()
     formData.append('name', courseForm.name)
     formData.append('description', courseForm.description)

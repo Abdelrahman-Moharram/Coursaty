@@ -18,9 +18,7 @@ const AddSection = () => {
     const AddAction = ()=>{
         addNewSection({course_id:id, section_name:newsection})
         .unwrap()
-        .then(res=>{
-            console.log("res", res);
-            
+        .then(res=>{            
             toast.success(`section ${newsection} added successfully!`)
         }).catch(err=>{
             console.log("err", err);

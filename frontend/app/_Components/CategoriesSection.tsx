@@ -11,12 +11,7 @@ interface industry{
 }
 
 const CategoriesSection = ({industries}:{industries:industry[]}) => {
-    const handleImageSkeleton = ()=>{
-        let total = [];
-        for(let i=0; i < 6; i ++)
-            total.push(<ImageSkeleton key={i} height='180px' width='221px' rounded='10px' />)
-        return total
-    }
+    
   return (
     <section>
         <div className="w-full px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">

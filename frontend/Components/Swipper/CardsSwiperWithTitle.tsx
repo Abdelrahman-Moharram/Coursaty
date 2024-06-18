@@ -2,13 +2,31 @@ import React from 'react'
 import { Divider, ImageSkeleton } from '@/Components/Common';
 import { CardsSwiper } from '@/Components/Swipper';
 
+interface subcategory{
+  id: string;
+  name: string;
+  category:categoryType
+}
+
+interface categoryType{
+  id: string;
+  name: string;
+}
+
+interface userType{
+  id: string;
+  first_name: string;
+  last_name: string;
+}
 interface courseType{
-    id: string,
-    name: string,
-    image: string,
-    price: number,
-    description: string,
-    created_at: Date
+  id: string,
+  name: string,
+  image: string,
+  price: number,
+  description: string,
+  created_at: Date,
+  instructor: userType;
+  subcategory: subcategory;
 }
 interface props{
     courses:courseType[];

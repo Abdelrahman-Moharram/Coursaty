@@ -1,6 +1,8 @@
-import { ChangeEvent, FormEvent } from 'react';
-import { Input } from '@/Components/Forms';
+'use client'
+import { ChangeEvent, FormEvent, useEffect } from 'react';
+import { FloatingInput } from '@/Components/Forms';
 import { Spinner } from '@/Components/Common';
+import ErrorAlert from '../alerts/ErrorAlert';
 
 interface Config {
 	labelText: string;
@@ -20,6 +22,7 @@ interface Props {
 	btnText: string;
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+	errors? : any
 }
 
 export default function Form({
@@ -28,21 +31,42 @@ export default function Form({
 	btnText,
 	onChange,
 	onSubmit,
+	errors,
 }: Props) {
+
+	console.log(errors);
+	
 	return (
 		<form className='space-y-6' onSubmit={onSubmit}>
+			{
+				errors?.hasOwnProperty('non_field_errors')?
+					<ul className='list-disc'>
+						{
+							errors['non_field_errors']?.map((i:string)=>(
+								<li className='text-red-500'>{i}</li>
+							))
+						}
+					</ul>
+				:null
+			}
+			{
+				errors?.detail?
+					<ErrorAlert 
+						text={errors.detail}
+					/>
+				:null
+			}
 			{config.map(input => (
-				<Input
+				<FloatingInput
+					label={input.labelText}
 					key={input.labelId}
 					labelId={input.labelId}
 					type={input.type}
 					onChange={(e:ChangeEvent<HTMLInputElement>)=>onChange(e)}
 					value={input.value}
-					link={input.link}
 					required={input.required}
-				>
-					{input.labelText}
-				</Input>
+					errors={errors?.hasOwnProperty(input.labelId) ? errors[input.labelId]: []}
+				/>
 			))}
 
 			<div>

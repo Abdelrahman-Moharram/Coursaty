@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 export default function useRegister() {
 	const router = useRouter();
+	const [errors, setErrors] = useState();
 	const [register, { isLoading }] = useRegisterMutation();
 
 	const [formData, setFormData] = useState({
@@ -32,8 +33,9 @@ export default function useRegister() {
 				toast.success('Please check email to verify account');
 				router.push('/auth/login');
 			})
-			.catch(() => {
+			.catch((err:any) => {
 				toast.error('Failed to register account');
+				setErrors(err?.data);
 			});
 	};
 
@@ -46,5 +48,6 @@ export default function useRegister() {
 		isLoading,
 		onChange,
 		onSubmit,
+		errors
 	};
 }

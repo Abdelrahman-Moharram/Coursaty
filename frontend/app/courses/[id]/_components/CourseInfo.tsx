@@ -5,6 +5,8 @@ import React from 'react'
 import StripePayment from './StripePayment';
 import { useAppSelector } from '@/redux/hooks';
 import BasicRating from '@/Components/Common/BasicRate';
+import { MdOutlineSlowMotionVideo } from "react-icons/md";
+import { MdOutlineDashboard } from "react-icons/md";
 
 interface IndustryType{
     id: string;
@@ -40,14 +42,15 @@ interface subcategoryType{
   }
 interface props{
     course:courseType;
-    isOwnCourse:boolean
+    isOwnCourse:boolean;
+    isCourseInstructor: boolean
 }
 interface item{
     href: string;
     title: string;
     icon?: string | undefined
 }
-const CourseInfo = ({course, isOwnCourse}:props) => {
+const CourseInfo = ({course, isOwnCourse, isCourseInstructor}:props) => {
     const BreadcrumbList = ():item[] | undefined =>{
         if(course)
             return[
@@ -83,8 +86,14 @@ const CourseInfo = ({course, isOwnCourse}:props) => {
                                             <StripePayment course_id={course.id} />
                                         </>
                                     :
-                                    
-                                        <ButtonLink href={course.id+'/learn'}>Go To Course</ButtonLink>
+                                        <div className="flex gap-3">
+                                            {
+                                                isCourseInstructor?
+                                                    <ButtonLink href={'/instructor/courses/'+course.id}><MdOutlineDashboard />Course Dashboard</ButtonLink>
+                                                :null
+                                            }
+                                            <ButtonLink href={course.id+'/learn'}> <MdOutlineSlowMotionVideo /> Go To Course</ButtonLink>
+                                        </div>
                                 :null
                                 }
                             </div>

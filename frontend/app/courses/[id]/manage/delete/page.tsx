@@ -20,7 +20,6 @@ const page = () => {
     setModal(!modal)
   }
   const formData = ({password}:{password:string}) =>{
-    console.log(password);
     deleteCourse({id, password})
       .unwrap()
       .then(res=>{

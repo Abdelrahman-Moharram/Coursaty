@@ -7,10 +7,12 @@ const emptyUser = {
 	email:'',
 	first_name:"",
 	last_name:"",
-	id:0
+	id:0,
+	courses:0
 }
 interface user {
     id: number;
+    courses: number;
     first_name:string;
     last_name: string;
     email:string;

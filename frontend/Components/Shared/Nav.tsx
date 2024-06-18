@@ -85,10 +85,13 @@ export default function Navbar() {
                         <li>
                             <Link className="text-gray-500 transition hover:text-gray-500/75" href="/industries"> Industries </Link>
                         </li>
-
-                        <li>
-                            <Link className="text-gray-500 transition hover:text-gray-500/75" href="#"> Blog </Link>
-                        </li>
+                        {
+                            user?.courses > 0?
+                                <li>
+                                    <Link className="text-gray-500 transition hover:text-gray-500/75" href="/instructor">Dashboard</Link>
+                                </li>
+                            :null
+                        }
                     </ul>
                     </nav>
                 </div>

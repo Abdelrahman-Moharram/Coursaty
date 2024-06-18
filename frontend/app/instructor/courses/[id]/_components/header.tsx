@@ -77,7 +77,7 @@ const Header = ({course}:props) => {
         <>
             <h1 className='text-2xl font-bold my-4 flex items-center gap-2'>
                 {course?.name}
-                <Link title='edit course' href={"manage/settings"} className='text-primary p-3 rounded-full hover:bg-gray-200'>
+                <Link title='edit course' href={course?.id+"/settings"} className='text-primary p-3 rounded-full hover:bg-gray-200'>
                     <FaEdit />
                 </Link>
             </h1>

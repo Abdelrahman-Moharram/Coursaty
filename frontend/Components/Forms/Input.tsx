@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import Link from 'next/link';
+import FloatingInput from './FloatingInput';
 
 interface Props {
 	labelId: string;
@@ -19,13 +19,11 @@ export default function Input({
 	type,
 	onChange,
 	value,
-	children,
-	link,
 	required = false,
 }: Props) {
 	return (
 		<div>
-			<div className='flex justify-between align-center'>
+			{/* <div className='flex justify-between align-center'>
 				<label
 					htmlFor={labelId}
 					className='block text-sm font-medium leading-6 text-gray-900'
@@ -42,12 +40,11 @@ export default function Input({
 						</Link>
 					</div>
 				)}
-			</div>
+			</div> */}
 			<div className='mt-2'>
-				<input
-					id={labelId}
-					className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-					name={labelId}
+				<FloatingInput
+					label={labelId}
+					labelId={labelId}
 					type={type}
 					onChange={onChange}
 					value={value}

@@ -5,6 +5,7 @@ import { useGetIndustriesQuery, useGetCategoriesMutation, useGetSubCategoriesMut
 import { useCreateCourseMutation } from '@/redux/api/Courses'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation';
+import Breadcrumb from '@/Components/Common/Breadcrumb'
 
 interface courseFormType{
   name: string
@@ -78,7 +79,11 @@ const imageChange = (e: ChangeEvent<HTMLInputElement> )=>{
     })
   }
   return (
+
     <div className='w-full mx-auto bg-white rounded-lg my-3 overflow-hidden p-5'>
+      <Breadcrumb items={
+        [{href:'/instructor', title:'Dashboard'}, {href:'/instructor/courses',title:'Courses'}, {href:'/instructor/courses/Create',title:'Create'}]
+      } />
       <h1 className='text-2xl font-bold my-5'>Create A New Course</h1>
       <CourseForm
         industries={industries?.industries}

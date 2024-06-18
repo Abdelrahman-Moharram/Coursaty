@@ -36,7 +36,6 @@ interface props{
 }
 
 const CourseCard = ({course, prefix}:props) => {
-    console.log(course);
     
   return (
     <a href={prefix+course.id} className="shadow-xl group relative block overflow-hidden h-auto rounded-lg">
@@ -79,14 +78,14 @@ const CourseCard = ({course, prefix}:props) => {
                 }
                 </span>
 
-                <button
+                {/* <button
                     className="flex gap-2 transition-all bg-primary hover:bg-primary-hover text-sm p-3 items-center text-white rounded-md"
                 >
                     <FaCartPlus />
                     <span>
                         Add to Cart
                     </span>
-                </button>
+                </button> */}
             </div>
         </div>
     </a>

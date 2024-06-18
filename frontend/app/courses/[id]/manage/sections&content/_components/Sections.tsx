@@ -76,13 +76,11 @@ export default function Sections({sections}:Props) {
     return total
   }
   const handleAdd = ()=>{
-    console.log(section_id);
     
     if (section_id){
       addCourseContent({course_id:id, section_id:section_id?.toString(), name:content.name})
         .unwrap()
         .then(data=>{
-          console.log(data);
           toast.success("content added successfully")
         })
         .catch(err=>{
